@@ -148,6 +148,10 @@ export function ActivityInputModal({
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              onKeyDown={(e) => {
+                // Prevent event bubbling for space and other keys
+                e.stopPropagation();
+              }}
               placeholder={
                 sessionType === "focus"
                   ? "e.g., Completed project proposal, studied React hooks..."
@@ -171,7 +175,7 @@ export function ActivityInputModal({
                     "flex flex-col items-center gap-2 p-3 rounded-lg border-2 transition-all",
                     category === cat.id
                       ? "border-orange-500 bg-orange-500/10"
-                      : "border-[#3a3a3a] hover:border-[#4a4a4a]",
+                      : "border-[#3a3a3a] hover:border-[#4a4a4a]"
                   )}
                 >
                   <cat.icon className="w-5 h-5" />
@@ -200,7 +204,7 @@ export function ActivityInputModal({
                       "p-1 rounded transition-all",
                       productivity >= rating
                         ? "text-yellow-500"
-                        : "text-gray-600 hover:text-muted-foreground",
+                        : "text-gray-600 hover:text-muted-foreground"
                     )}
                   >
                     <Star className="w-5 h-5 fill-current" />
@@ -233,7 +237,7 @@ export function ActivityInputModal({
                       "p-1 rounded transition-all",
                       energy >= rating
                         ? "text-orange-500"
-                        : "text-gray-600 hover:text-muted-foreground",
+                        : "text-gray-600 hover:text-muted-foreground"
                     )}
                   >
                     <Zap className="w-5 h-5 fill-current" />
@@ -259,6 +263,10 @@ export function ActivityInputModal({
               id="notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
+              onKeyDown={(e) => {
+                // Prevent event bubbling for space and other keys
+                e.stopPropagation();
+              }}
               placeholder="Any additional thoughts or observations..."
               className="bg-[#2a2a2a] border-[#3a3a3a] text-primary-foreground placeholder-gray-400 min-h-[60px]"
             />

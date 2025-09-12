@@ -22,6 +22,8 @@ import {
   Bell,
   BellOff,
   Clock,
+  ChevronLeftCircle,
+  ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -429,10 +431,10 @@ function TimerContent() {
               {/* Activity View Header */}
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-primary-foreground">
+                  <h2 className="text-xl font-bold text-primary-foreground">
                     Activity Tracking
                   </h2>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     View your productivity patterns
                   </p>
                 </div>
@@ -441,7 +443,7 @@ function TimerContent() {
                   onClick={() => setShowActivityView(false)}
                   className="bg-primary border-[#2a2a2a] text-gray-300 hover:bg-[#2a2a2a]"
                 >
-                  Back to Timer
+                  <ArrowLeft /> Back
                 </Button>
               </div>
 

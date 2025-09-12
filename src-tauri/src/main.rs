@@ -1,14 +1,18 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use serde_json::Value;
 use std::fs;
 use std::path::PathBuf;
-use tauri::api::notification::Notification;
-use tauri::{Manager, SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem};
+use tauri::{
+    menu::{Menu, MenuItem, PredefinedMenuItem, Submenu},
+    tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
+    Manager, Runtime,
+};
 
 #[tauri::command]
 async fn read_profiles(app_handle: tauri::AppHandle) -> Result<String, String> {
     let app_dir = app_handle
-        .path_resolver()
+        .path()
         .app_data_dir()
         .expect("failed to resolve app data dir");
 
@@ -29,7 +33,7 @@ async fn read_profiles(app_handle: tauri::AppHandle) -> Result<String, String> {
 #[tauri::command]
 async fn write_profiles(app_handle: tauri::AppHandle, data: String) -> Result<(), String> {
     let app_dir = app_handle
-        .path_resolver()
+        .path()
         .app_data_dir()
         .expect("failed to resolve app data dir");
 
@@ -43,7 +47,7 @@ async fn write_profiles(app_handle: tauri::AppHandle, data: String) -> Result<()
 #[tauri::command]
 async fn read_activities(app_handle: tauri::AppHandle) -> Result<String, String> {
     let app_dir = app_handle
-        .path_resolver()
+        .path()
         .app_data_dir()
         .expect("failed to resolve app data dir");
 
@@ -59,7 +63,7 @@ async fn read_activities(app_handle: tauri::AppHandle) -> Result<String, String>
 #[tauri::command]
 async fn write_activities(app_handle: tauri::AppHandle, data: String) -> Result<(), String> {
     let app_dir = app_handle
-        .path_resolver()
+        .path()
         .app_data_dir()
         .expect("failed to resolve app data dir");
 
@@ -71,7 +75,7 @@ async fn write_activities(app_handle: tauri::AppHandle, data: String) -> Result<
 #[tauri::command]
 async fn read_settings(app_handle: tauri::AppHandle) -> Result<String, String> {
     let app_dir = app_handle
-        .path_resolver()
+        .path()
         .app_data_dir()
         .expect("failed to resolve app data dir");
 
@@ -90,7 +94,7 @@ async fn read_settings(app_handle: tauri::AppHandle) -> Result<String, String> {
 #[tauri::command]
 async fn write_settings(app_handle: tauri::AppHandle, data: String) -> Result<(), String> {
     let app_dir = app_handle
-        .path_resolver()
+        .path()
         .app_data_dir()
         .expect("failed to resolve app data dir");
 
@@ -99,62 +103,19 @@ async fn write_settings(app_handle: tauri::AppHandle, data: String) -> Result<()
     fs::write(&settings_path, data).map_err(|e| format!("failed to write settings: {}", e))
 }
 
-fn main() {
-    let tray_menu = SystemTrayMenu::new()
-        .add_item(SystemTrayMenuItem::new("Show", "show"))
-        .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(SystemTrayMenuItem::new("Quit", "quit"));
-
-    let system_tray = SystemTray::new().with_menu(tray_menu);
-
-    tauri::Builder::default()
-        .system_tray(system_tray)
-        .on_system_tray_event(|app, event| match event {
-            SystemTrayEvent::LeftClick {
-                position: _,
-                size: _,
-                ..
-            } => {
-                let window = app.get_window("main").unwrap();
-                window.show().unwrap();
-                window.set_focus().unwrap();
-            }
-            SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
-                "quit" => {
-                    std::process::exit(0);
-                }
-                "show" => {
-                    let window = app.get_window("main").unwrap();
-                    window.show().unwrap();
-                    window.set_focus().unwrap();
-                }
-                _ => {}
-            },
-            _ => {}
-        })
-        .invoke_handler(tauri::generate_handler![
-            read_profiles,
-            write_profiles,
-            read_activities,
-            write_activities,
-            read_settings,
-            write_settings,
-            show_notification,
-            request_notification_permission,
-            set_always_on_top,
-            minimize_to_tray,
-            export_data,
-            import_data,
-        ])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
-}
-
 #[tauri::command]
-async fn show_notification(title: String, body: String) -> Result<(), String> {
-    Notification::new(&title)
-        .body(&body)
-        .icon("icon.png")
+async fn show_notification(
+    app_handle: tauri::AppHandle,
+    title: String,
+    body: String,
+) -> Result<(), String> {
+    use tauri_plugin_notification::NotificationExt;
+
+    app_handle
+        .notification()
+        .builder()
+        .title(title)
+        .body(body)
         .show()
         .map_err(|e| format!("Failed to show notification: {}", e))
 }
@@ -162,6 +123,7 @@ async fn show_notification(title: String, body: String) -> Result<(), String> {
 #[tauri::command]
 async fn request_notification_permission() -> Result<bool, String> {
     // On desktop, notifications are typically enabled by default
+    // You might want to implement platform-specific permission checks here
     Ok(true)
 }
 
@@ -186,7 +148,7 @@ async fn export_data(
     file_path: String,
 ) -> Result<(), String> {
     let app_dir = app_handle
-        .path_resolver()
+        .path()
         .app_data_dir()
         .expect("failed to resolve app data dir");
 
@@ -201,7 +163,9 @@ async fn export_data(
         return Err(format!("No {} data found", data_type));
     }
 
-    fs::copy(&source_path, &file_path).map_err(|e| format!("Failed to export {}: {}", data_type, e))
+    fs::copy(&source_path, &file_path)
+        .map_err(|e| format!("Failed to export {}: {}", data_type, e))?;
+    Ok(())
 }
 
 #[tauri::command]
@@ -211,7 +175,7 @@ async fn import_data(
     file_path: String,
 ) -> Result<(), String> {
     let app_dir = app_handle
-        .path_resolver()
+        .path()
         .app_data_dir()
         .expect("failed to resolve app data dir");
 
@@ -226,5 +190,177 @@ async fn import_data(
         return Err("Source file not found".to_string());
     }
 
-    fs::copy(&file_path, &target_path).map_err(|e| format!("Failed to import {}: {}", data_type, e))
+    // Validate JSON before importing
+    let content =
+        fs::read_to_string(&file_path).map_err(|e| format!("Failed to read import file: {}", e))?;
+
+    serde_json::from_str::<Value>(&content).map_err(|e| format!("Invalid JSON format: {}", e))?;
+
+    fs::write(&target_path, content).map_err(|e| format!("Failed to import {}: {}", data_type, e))
+}
+
+#[tauri::command]
+async fn get_app_data_dir(app_handle: tauri::AppHandle) -> Result<String, String> {
+    let app_dir = app_handle
+        .path()
+        .app_data_dir()
+        .expect("failed to resolve app data dir");
+
+    Ok(app_dir.to_string_lossy().to_string())
+}
+
+#[tauri::command]
+async fn reset_all_data(app_handle: tauri::AppHandle) -> Result<(), String> {
+    let app_dir = app_handle
+        .path()
+        .app_data_dir()
+        .expect("failed to resolve app data dir");
+
+    // Remove all data files
+    let files = ["profiles.json", "activities.json", "settings.json"];
+
+    for file in &files {
+        let file_path = app_dir.join(file);
+        if file_path.exists() {
+            fs::remove_file(&file_path).map_err(|e| format!("Failed to remove {}: {}", file, e))?;
+        }
+    }
+
+    Ok(())
+}
+
+#[tauri::command]
+async fn backup_data(app_handle: tauri::AppHandle, backup_name: String) -> Result<String, String> {
+    let app_dir = app_handle
+        .path()
+        .app_data_dir()
+        .expect("failed to resolve app data dir");
+
+    let backup_dir = app_dir.join("backups");
+    fs::create_dir_all(&backup_dir)
+        .map_err(|e| format!("Failed to create backup directory: {}", e))?;
+
+    let timestamp = chrono::Local::now().format("%Y%m%d_%H%M%S");
+    let backup_folder = backup_dir.join(format!("{}_{}", backup_name, timestamp));
+    fs::create_dir_all(&backup_folder)
+        .map_err(|e| format!("Failed to create backup folder: {}", e))?;
+
+    // Copy all data files
+    let files = ["profiles.json", "activities.json", "settings.json"];
+
+    for file in &files {
+        let source = app_dir.join(file);
+        let destination = backup_folder.join(file);
+
+        if source.exists() {
+            fs::copy(&source, &destination)
+                .map_err(|e| format!("Failed to backup {}: {}", file, e))?;
+        }
+    }
+
+    Ok(backup_folder.to_string_lossy().to_string())
+}
+
+fn create_tray_menu<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<Menu<R>> {
+    let show = MenuItem::with_id(app, "show", "Show", true, None::<&str>)?;
+    let start_focus = MenuItem::with_id(app, "start_focus", "Start Focus", true, None::<&str>)?;
+    let start_break = MenuItem::with_id(app, "start_break", "Start Break", true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
+
+    let menu = Menu::with_items(
+        app,
+        &[
+            &show,
+            &PredefinedMenuItem::separator(app)?,
+            &start_focus,
+            &start_break,
+            &PredefinedMenuItem::separator(app)?,
+            &quit,
+        ],
+    )?;
+
+    Ok(menu)
+}
+
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
+pub fn run() {
+    tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_notification::init())
+        .setup(|app| {
+            let handle = app.handle().clone();
+
+            // Create tray menu
+            let menu = create_tray_menu(&handle)?;
+
+            // Build tray icon
+            let _tray = TrayIconBuilder::with_id("main-tray")
+                .menu(&menu)
+                .icon(app.default_window_icon().unwrap().clone())
+                .on_menu_event(move |_app, event| match event.id().as_ref() {
+                    "show" => {
+                        if let Some(window) = _app.get_webview_window("main") {
+                            let _ = window.show();
+                            let _ = window.set_focus();
+                        }
+                    }
+                    "start_focus" => {
+                        if let Some(window) = _app.get_webview_window("main") {
+                            let _ = window.show();
+                            let _ = window.set_focus();
+                            let _ = window.emit("start-focus", {});
+                        }
+                    }
+                    "start_break" => {
+                        if let Some(window) = _app.get_webview_window("main") {
+                            let _ = window.show();
+                            let _ = window.set_focus();
+                            let _ = window.emit("start-break", {});
+                        }
+                    }
+                    "quit" => {
+                        _app.exit(0);
+                    }
+                    _ => {}
+                })
+                .on_tray_icon_event(|_tray, event| match event {
+                    TrayIconEvent::Click {
+                        button: MouseButton::Left,
+                        button_state: MouseButtonState::Up,
+                        ..
+                    } => {
+                        if let Some(app) = _tray.app_handle().get_webview_window("main") {
+                            let _ = app.show();
+                            let _ = app.set_focus();
+                        }
+                    }
+                    _ => {}
+                })
+                .build(app)?;
+
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![
+            read_profiles,
+            write_profiles,
+            read_activities,
+            write_activities,
+            read_settings,
+            write_settings,
+            show_notification,
+            request_notification_permission,
+            set_always_on_top,
+            minimize_to_tray,
+            export_data,
+            import_data,
+            get_app_data_dir,
+            reset_all_data,
+            backup_data
+        ])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}
+
+fn main() {
+    run();
 }

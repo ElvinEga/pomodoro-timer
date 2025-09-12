@@ -8,7 +8,7 @@ import React, {
   useCallback,
 } from "react";
 import { Activity, ActivityInput, DailySummary, ActivityStats } from "@/types";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import {
   format,
   startOfDay,
@@ -16,7 +16,7 @@ import {
   eachDayOfInterval,
   subDays,
 } from "date-fns";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 interface ActivityContextType {
   activities: Activity[];
@@ -37,7 +37,7 @@ const ActivityContext = createContext<ActivityContextType | undefined>(
   undefined,
 );
 
-export function ActivityProvider({ children }: { children: ReactNode }) {
+function useActivityStore() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -234,6 +234,10 @@ export function ActivityProvider({ children }: { children: ReactNode }) {
       streakDays,
       mostProductiveTime: "Morning", // This would need more sophisticated analysis
       favoriteCategory: "Work", // This would need category analysis
+      // The ActivityStats interface now includes weekly and monthly goal progress.
+      // These are placeholder values; implement real calculations later.
+      weeklyGoalProgress: 0,
+      monthlyGoalProgress: 0,
     };
   }, [activities]);
 
@@ -311,7 +315,7 @@ export function ActivityProvider({ children }: { children: ReactNode }) {
 }
 
 export function ActivityProvider({ children }: { children: ReactNode }) {
-  const activityData = ActivityProviderLogic({ children });
+  const activityData = useActivityStore();
 
   return (
     <ActivityContext.Provider value={activityData}>

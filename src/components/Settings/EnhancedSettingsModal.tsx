@@ -31,8 +31,9 @@ import {
 import { useProfileContext } from "@/stores/ProfileContext";
 import { useActivityContext } from "@/stores/ActivityContext";
 import { audioNotification } from "@/utils/audio";
-import { invoke } from "@tauri-apps/api/tauri";
-import { open, save } from "@tauri-apps/api/dialog";
+import { invoke } from "@tauri-apps/api/core";
+// Updated import for Tauri 2
+import { open as openDialog, save } from "@tauri-apps/plugin-dialog";
 import { toast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -162,7 +163,7 @@ export function EnhancedSettingsModal({
     dataType: "activities" | "profiles" | "settings",
   ) => {
     try {
-      const selected = await open({
+      const selected = await openDialog({
         filters: [
           {
             name: "JSON Files",
@@ -214,6 +215,7 @@ export function EnhancedSettingsModal({
       desktopNotifications: true,
       alwaysOnTop: false,
       minimizeToTray: true,
+      soundVolume: 50,
     });
     setHasChanges(true);
   };

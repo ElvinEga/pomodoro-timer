@@ -9,12 +9,20 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Plus, Settings, BarChart3 } from "lucide-react";
+import { ChevronDown, Plus, Settings, BarChart3, Check } from "lucide-react";
 import { useProfileContext } from "@/stores/ProfileContext";
 import { Profile } from "@/types";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ProfileManager } from "@/components/Settings/ProfileManager";
 
 interface EnhancedProfileSelectorProps {
   className?: string;

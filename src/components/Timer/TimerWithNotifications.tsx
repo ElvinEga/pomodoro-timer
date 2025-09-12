@@ -1,8 +1,8 @@
 // src/components/Timer/TimerWithNotifications.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import { useTimer } from "@/hooks/useTimer";
-import { useProfileContext } from "@/stores/ProfileContext";
-import { useActivityContext } from "@/stores/ActivityContext";
+import { useProfileContext, ProfileProvider } from "@/stores/ProfileContext";
+import { useActivityContext, ActivityProvider } from "@/stores/ActivityContext";
 import { CircularProgress } from "./CircularProgress";
 import { TimerDisplay } from "./TimerDisplay";
 import { TimerControls } from "./TimerControls";
@@ -30,11 +30,11 @@ import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { audioNotification } from "@/utils/audio";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { cn } from "@/lib/utils";
 
 function TimerContent() {
-  const { activeProfile, settings } = useProfileContext();
+  const { activeProfile, settings, updateSettings } = useProfileContext();
   const { addActivity } = useActivityContext();
   const { state, start, pause, resume, reset, setProfile } = useTimer();
   const [showActivityInput, setShowActivityInput] = useState(false);
@@ -61,6 +61,32 @@ function TimerContent() {
     state.currentSession,
     state.currentProfile,
   ]);
+
+  // ADD THE MISSING FUNCTION HERE
+  const handleSettingChange = useCallback(
+    async (key: keyof typeof settings, value: any) => {
+      try {
+        await updateSettings({ [key]: value });
+
+        if (key === "soundAlerts" && value) {
+          audioNotification.playSound("notification");
+        }
+
+        toast({
+          title: "Setting updated",
+          description: `${key} has been ${value ? "enabled" : "disabled"}.`,
+          className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to update setting.",
+          variant: "destructive",
+        });
+      }
+    },
+    [settings, updateSettings, toast],
+  );
 
   const handleSessionComplete = useCallback(async () => {
     const sessionType = state.currentSession;

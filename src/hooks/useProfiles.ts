@@ -34,6 +34,7 @@ const defaultSettings: ProfileSettings = {
   desktopNotifications: true,
   alwaysOnTop: false,
   minimizeToTray: true,
+  soundVolume: 50,
 };
 
 export function useProfiles(): UseProfilesReturn {

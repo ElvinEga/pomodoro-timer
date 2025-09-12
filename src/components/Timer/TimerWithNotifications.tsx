@@ -32,6 +32,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { audioNotification } from "@/utils/audio";
 import { invoke } from "@tauri-apps/api/core";
 import { cn } from "@/lib/utils";
+import { useStatistics } from "@/hooks/useStatistics";
 
 function TimerContent() {
   const { activeProfile, settings, updateSettings } = useProfileContext();
@@ -45,6 +46,13 @@ function TimerContent() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const { toast } = useToast();
+  const {
+    weekStats,
+    monthStats,
+    yearStats,
+    categoryStats,
+    mostProductiveTime,
+  } = useStatistics();
 
   // Update timer when profile changes
   React.useEffect(() => {
@@ -59,8 +67,8 @@ function TimerContent() {
         completedSession === "focus"
           ? state.currentProfile.focusDuration
           : completedSession === "short-break"
-            ? state.currentProfile.shortBreakDuration
-            : state.currentProfile.longBreakDuration;
+          ? state.currentProfile.shortBreakDuration
+          : state.currentProfile.longBreakDuration;
       completeSession();
       handleSessionComplete(completedSession, completedDuration);
     }
@@ -95,13 +103,13 @@ function TimerContent() {
         });
       }
     },
-    [settings, updateSettings, toast],
+    [settings, updateSettings, toast]
   );
 
   const handleSessionComplete = useCallback(
     async (
       sessionType: "focus" | "short-break" | "long-break",
-      duration: number,
+      duration: number
     ) => {
       // Play sound notification
       if (settings.soundAlerts) {
@@ -119,7 +127,9 @@ function TimerContent() {
             sessionType === "focus" ? "Focus Complete!" : "Break Time Over!";
           const body =
             sessionType === "focus"
-              ? `Great job! Time for a ${state.currentSession === "long-break" ? "long" : "short"} break.`
+              ? `Great job! Time for a ${
+                  state.currentSession === "long-break" ? "long" : "short"
+                } break.`
               : "Ready to focus again? Let's get back to work!";
 
           await invoke("show_notification", { title, body });
@@ -162,7 +172,7 @@ function TimerContent() {
         }, 1000);
       }
     },
-    [state, settings, audioNotification, toast, start],
+    [state, settings, audioNotification, toast, start]
   );
 
   const handleMinimizeToTray = async () => {
@@ -199,8 +209,8 @@ function TimerContent() {
     state.currentSession === "focus"
       ? state.currentProfile.focusDuration * 60
       : state.currentSession === "short-break"
-        ? state.currentProfile.shortBreakDuration * 60
-        : state.currentProfile.longBreakDuration * 60;
+      ? state.currentProfile.shortBreakDuration * 60
+      : state.currentProfile.longBreakDuration * 60;
 
   const progress =
     ((totalDuration - state.timeRemaining) / totalDuration) * 100;
@@ -240,9 +250,7 @@ function TimerContent() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="text-primary-foreground font-bold text-sm">
-                P
-              </span>
+              <img src="/logo.svg" alt="Pomodoro Timer" className="w-8 h-8" />
             </motion.div>
             <h1 className="text-xl hidden sm:block font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Pomodoro Timer
@@ -260,7 +268,7 @@ function TimerContent() {
                 }
                 className={cn(
                   "text-muted-foreground hover:text-primary-foreground",
-                  settings.soundAlerts && "text-orange-500",
+                  settings.soundAlerts && "text-orange-500"
                 )}
               >
                 {settings.soundAlerts ? (
@@ -279,12 +287,12 @@ function TimerContent() {
                 onClick={() =>
                   handleSettingChange(
                     "desktopNotifications",
-                    !settings.desktopNotifications,
+                    !settings.desktopNotifications
                   )
                 }
                 className={cn(
                   "text-muted-foreground hover:text-primary-foreground",
-                  settings.desktopNotifications && "text-orange-500",
+                  settings.desktopNotifications && "text-orange-500"
                 )}
               >
                 {settings.desktopNotifications ? (
@@ -303,7 +311,7 @@ function TimerContent() {
                 onClick={() => setShowActivityView(!showActivityView)}
                 className={cn(
                   "text-muted-foreground hover:text-primary-foreground",
-                  showActivityView && "text-orange-500 bg-orange-500/10",
+                  showActivityView && "text-orange-500 bg-orange-500/10"
                 )}
               >
                 <Activity className="w-5 h-5" />
@@ -405,14 +413,14 @@ function TimerContent() {
                               state.currentProfile.longBreakAfter
                             ? "bg-orange-500 scale-110"
                             : i ===
-                                state.sessionsCompleted %
-                                  state.currentProfile.longBreakAfter
-                              ? "bg-orange-500/50 scale-105"
-                              : "bg-gray-600",
+                              state.sessionsCompleted %
+                                state.currentProfile.longBreakAfter
+                            ? "bg-orange-500/50 scale-105"
+                            : "bg-gray-600"
                         )}
                         whileHover={{ scale: 1.2 }}
                       />
-                    ),
+                    )
                   )}
                 </div>
               </motion.div>
@@ -504,7 +512,7 @@ function TimerContent() {
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            12
+                            {weekStats.sessions}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Sessions
@@ -512,7 +520,7 @@ function TimerContent() {
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            300
+                            {weekStats.focusMinutes}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Focus Min
@@ -520,7 +528,9 @@ function TimerContent() {
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            4.2
+                            {weekStats.averageRating > 0
+                              ? weekStats.averageRating.toFixed(1)
+                              : "—"}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Avg Rating
@@ -528,7 +538,7 @@ function TimerContent() {
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            7
+                            {weekStats.streakDays}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Day Streak
@@ -541,7 +551,7 @@ function TimerContent() {
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            48
+                            {monthStats.sessions}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Sessions
@@ -549,7 +559,7 @@ function TimerContent() {
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            1,200
+                            {monthStats.focusMinutes.toLocaleString()}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Focus Min
@@ -557,7 +567,9 @@ function TimerContent() {
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            4.1
+                            {monthStats.averageRating > 0
+                              ? monthStats.averageRating.toFixed(1)
+                              : "—"}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Avg Rating
@@ -565,10 +577,10 @@ function TimerContent() {
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            21
+                            {monthStats.totalDays}
                           </div>
                           <div className="text-sm text-muted-foreground">
-                            Day Streak
+                            Active Days
                           </div>
                         </div>
                       </div>

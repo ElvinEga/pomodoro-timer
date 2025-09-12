@@ -94,10 +94,10 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">
+          <h2 className="text-2xl font-bold text-primary-foreground">
             {formatDate(selectedDate)}
           </h2>
-          <p className="text-gray-400">
+          <p className="text-muted-foreground">
             {activities.length} activities • {summary?.totalFocusTime || 0}min
             focus time
           </p>
@@ -109,13 +109,13 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
               <Button
                 variant="outline"
                 size="sm"
-                className="border-[#2a2a2a] text-gray-300 hover:bg-[#2a2a2a]"
+                className="bg-primary border-[#2a2a2a] text-gray-300 hover:bg-[#2a2a2a]"
               >
                 <Filter className="w-4 h-4 mr-2" />
                 {filterCategory === "all" ? "All Categories" : filterCategory}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+            <DropdownMenuContent className=" text-primary-foreground">
               <DropdownMenuItem
                 onClick={() => setFilterCategory("all")}
                 className="hover:bg-[#2a2a2a]"
@@ -139,15 +139,15 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
       {/* Summary Cards */}
       {summary && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="bg-[#1a1a1a] border-[#2a2a2a]">
+          <Card className="">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Clock className="w-4 h-4" />
                 Focus Time
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-primary-foreground">
                 {summary.totalFocusTime} min
               </div>
               <p className="text-xs text-gray-500 mt-1">
@@ -156,30 +156,30 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
             </CardContent>
           </Card>
 
-          <Card className="bg-[#1a1a1a] border-[#2a2a2a]">
+          <Card className="">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <TrendingUp className="w-4 h-4" />
                 Productivity
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-primary-foreground">
                 {summary.productivity > 0 ? `${summary.productivity}/5` : "N/A"}
               </div>
               <p className="text-xs text-gray-500 mt-1">Average rating</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-[#1a1a1a] border-[#2a2a2a]">
+          <Card className="">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Zap className="w-4 h-4" />
                 Energy Level
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-primary-foreground">
                 {summary.energy > 0 ? `${summary.energy}/5` : "N/A"}
               </div>
               <p className="text-xs text-gray-500 mt-1">Average rating</p>
@@ -198,7 +198,9 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
               className="text-center py-12"
             >
               <Calendar className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400">No activities for this day</p>
+              <p className="text-muted-foreground">
+                No activities for this day
+              </p>
               <p className="text-sm text-gray-500 mt-1">
                 {format(selectedDate, "MMMM d, yyyy")}
               </p>
@@ -212,27 +214,40 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <Card className="bg-[#1a1a1a] border-[#2a2a2a] hover:border-[#3a3a3a] transition-colors">
+                <Card className=" hover:border-[#3a3a3a] transition-colors">
                   <CardContent className="p-4">
-                    <div className="flex items-start gap-4">
-                      {/* Icon and time */}
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-2 h-2 rounded-full ${getCategoryColor(activity.category)}`}
-                        />
-                        <div className="text-sm text-gray-400">
-                          {format(activity.timestamp, "HH:mm")}
+                    <div className="flex flex-col">
+                      <div className="flex justify-between items-start gap-4">
+                        {/* Icon and time */}
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-2 h-2 rounded-full ${getCategoryColor(activity.category)}`}
+                          />
+                          <div className="text-sm text-muted-foreground">
+                            {format(activity.timestamp, "HH:mm")}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-end gap-1 sm:justify-start">
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => deleteActivity(activity.id)}
+                            className="text-muted-foreground hover:text-red-400 h-8 w-8"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
                         </div>
                       </div>
 
                       {/* Content */}
                       <div className="flex-1 space-y-2">
-                        <div className="flex items-start justify-between">
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
                           <div className="space-y-1">
-                            <p className="text-white font-medium">
+                            <p className="text-primary-foreground font-medium">
                               {activity.description}
                             </p>
-                            <div className="flex items-center gap-2 text-sm">
+                            <div className="flex flex-wrap items-center gap-2 text-sm">
                               <Badge
                                 variant="secondary"
                                 className="bg-[#2a2a2a] text-gray-300"
@@ -249,25 +264,14 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
                               )}
                             </div>
                           </div>
-
-                          <div className="flex items-center gap-1">
-                            <Button
-                              size="icon"
-                              variant="ghost"
-                              onClick={() => deleteActivity(activity.id)}
-                              className="text-gray-400 hover:text-red-400 h-8 w-8"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
                         </div>
 
                         {/* Ratings */}
                         {(activity as any).productivity && (
-                          <div className="flex items-center gap-4 text-sm">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-sm">
                             <div className="flex items-center gap-1">
-                              <TrendingUp className="w-4 h-4 text-gray-400" />
-                              <span className="text-gray-400">
+                              <TrendingUp className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-muted-foreground">
                                 Productivity:
                               </span>
                               <div className="flex gap-0.5">
@@ -286,8 +290,10 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
                             </div>
                             {(activity as any).energy && (
                               <div className="flex items-center gap-1">
-                                <Zap className="w-4 h-4 text-gray-400" />
-                                <span className="text-gray-400">Energy:</span>
+                                <Zap className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-muted-foreground">
+                                  Energy:
+                                </span>
                                 <div className="flex gap-0.5">
                                   {[...Array(5)].map((_, i) => (
                                     <Zap
@@ -308,7 +314,7 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
 
                         {/* Notes */}
                         {(activity as any).notes && (
-                          <p className="text-sm text-gray-400 italic">
+                          <p className="text-sm text-muted-foreground italic">
                             "{(activity as any).notes}"
                           </p>
                         )}

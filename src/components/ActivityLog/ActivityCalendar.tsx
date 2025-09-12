@@ -66,17 +66,17 @@ export function ActivityCalendar({
   };
 
   return (
-    <Card className="bg-[#1a1a1a] border-[#2a2a2a]">
+    <Card className="">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg text-white">
+          <CardTitle className="text-lg text-primary-foreground">
             Activity Calendar
           </CardTitle>
           <Button
             size="sm"
             variant="outline"
             onClick={goToToday}
-            className="border-[#2a2a2a] text-gray-300 hover:bg-[#2a2a2a]"
+            className="bg-primary border-[#2a2a2a] text-gray-300 hover:bg-[#2a2a2a]"
           >
             Today
           </Button>
@@ -89,12 +89,12 @@ export function ActivityCalendar({
             size="icon"
             variant="ghost"
             onClick={() => navigateMonth("prev")}
-            className="text-gray-400 hover:text-white"
+            className="text-muted-foreground hover:text-primary-foreground"
           >
             <ChevronLeft className="w-5 h-5" />
           </Button>
 
-          <h3 className="text-lg font-semibold text-white">
+          <h3 className="text-lg font-semibold text-primary-foreground">
             {format(currentMonth, "MMMM yyyy")}
           </h3>
 
@@ -102,7 +102,7 @@ export function ActivityCalendar({
             size="icon"
             variant="ghost"
             onClick={() => navigateMonth("next")}
-            className="text-gray-400 hover:text-white"
+            className="text-muted-foreground hover:text-primary-foreground"
           >
             <ChevronRight className="w-5 h-5" />
           </Button>
@@ -113,7 +113,7 @@ export function ActivityCalendar({
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
             <div
               key={day}
-              className="text-center text-xs text-gray-400 font-medium py-2"
+              className="text-center text-xs text-muted-foreground font-medium py-2"
             >
               {day}
             </div>
@@ -151,7 +151,7 @@ export function ActivityCalendar({
                   <span
                     className={cn(
                       "text-sm font-medium",
-                      isSelected ? "text-white" : "text-gray-300",
+                      isSelected ? "text-primary-foreground" : "text-gray-300",
                     )}
                   >
                     {format(day, "d")}
@@ -172,7 +172,7 @@ export function ActivityCalendar({
 
                   {/* Tooltip on hover */}
                   {summary && (
-                    <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-[#2a2a2a] text-white text-xs rounded-lg p-2 opacity-0 hover:opacity-100 transition-opacity pointer-events-none z-10 whitespace-nowrap">
+                    <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-[#2a2a2a] text-primary-foreground text-xs rounded-lg p-2 opacity-0 hover:opacity-100 transition-opacity pointer-events-none z-10 whitespace-nowrap">
                       <div className="font-medium">{format(day, "MMM d")}</div>
                       <div>{summary.sessionsCompleted} sessions</div>
                       <div>{summary.totalFocusTime}min focus</div>
@@ -186,7 +186,7 @@ export function ActivityCalendar({
 
         {/* Legend */}
         <div className="mt-6 pt-4 border-t border-[#2a2a2a]">
-          <div className="flex items-center justify-between text-xs text-gray-400">
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>Less</span>
             <div className="flex gap-1">
               {[0, 1, 2, 3, 4].map((level) => (

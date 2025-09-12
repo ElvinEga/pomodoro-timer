@@ -21,10 +21,14 @@ function LoadingScreen() {
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-4"
         >
-          <Coffee className="w-8 h-8 text-white" />
+          <Coffee className="w-8 h-8 text-primary-foreground" />
         </motion.div>
-        <h2 className="text-2xl font-bold text-white mb-2">Pomodoro Timer</h2>
-        <p className="text-gray-400">Getting ready for focused work...</p>
+        <h2 className="text-2xl font-bold text-primary-foreground mb-2">
+          Pomodoro Timer
+        </h2>
+        <p className="text-muted-foreground">
+          Getting ready for focused work...
+        </p>
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: "100%" }}
@@ -58,7 +62,7 @@ class ErrorBoundary extends React.Component<
     if (this.state.hasError) {
       return (
         <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a] flex items-center justify-center p-6">
-          <Card className="bg-[#1a1a1a] border-[#2a2a2a] max-w-md w-full">
+          <Card className=" max-w-md w-full">
             <CardHeader>
               <CardTitle className="text-red-500 flex items-center gap-2">
                 <Power className="w-5 h-5" />

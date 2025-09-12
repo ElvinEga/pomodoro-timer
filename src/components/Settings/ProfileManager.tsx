@@ -51,7 +51,7 @@ export function ProfileManager() {
       toast({
         title: "Profile created",
         description: `${formData.name} has been created successfully.`,
-        className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+        className: " text-primary-foreground",
       });
       setIsCreating(false);
       resetForm();
@@ -73,7 +73,7 @@ export function ProfileManager() {
       toast({
         title: "Profile updated",
         description: `${formData.name} has been updated successfully.`,
-        className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+        className: " text-primary-foreground",
       });
       setEditingProfile(null);
       resetForm();
@@ -102,7 +102,7 @@ export function ProfileManager() {
       toast({
         title: "Profile deleted",
         description: `${profile.name} has been deleted.`,
-        className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+        className: " text-primary-foreground",
       });
     } catch (error) {
       toast({
@@ -150,17 +150,17 @@ export function ProfileManager() {
               New Profile
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[500px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+          <DialogContent className="sm:max-w-[500px]  text-primary-foreground">
             <DialogHeader>
               <DialogTitle>Create Custom Profile</DialogTitle>
-              <DialogDescription className="text-gray-400">
+              <DialogDescription className="text-muted-foreground">
                 Design your perfect Pomodoro timing
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-6 py-4">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-white">
+                <Label htmlFor="name" className="text-primary-foreground">
                   Profile Name
                 </Label>
                 <Input
@@ -170,12 +170,12 @@ export function ProfileManager() {
                     setFormData({ ...formData, name: e.target.value })
                   }
                   placeholder="My Custom Profile"
-                  className="bg-[#2a2a2a] border-[#3a3a3a] text-white placeholder-gray-400"
+                  className="bg-[#2a2a2a] border-[#3a3a3a] text-primary-foreground placeholder-gray-400"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-white flex items-center gap-2">
+                <Label className="text-primary-foreground flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   Focus Duration: {formData.focusDuration} minutes
                 </Label>
@@ -193,7 +193,7 @@ export function ProfileManager() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-white">Short Break</Label>
+                  <Label className="text-primary-foreground">Short Break</Label>
                   <Slider
                     value={[formData.shortBreakDuration]}
                     onValueChange={([value]) =>
@@ -203,13 +203,13 @@ export function ProfileManager() {
                     min={1}
                     step={1}
                   />
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-muted-foreground">
                     {formData.shortBreakDuration} min
                   </span>
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-white">Long Break</Label>
+                  <Label className="text-primary-foreground">Long Break</Label>
                   <Slider
                     value={[formData.longBreakDuration]}
                     onValueChange={([value]) =>
@@ -219,14 +219,16 @@ export function ProfileManager() {
                     min={5}
                     step={5}
                   />
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-muted-foreground">
                     {formData.longBreakDuration} min
                   </span>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-white">Long Break After</Label>
+                <Label className="text-primary-foreground">
+                  Long Break After
+                </Label>
                 <Slider
                   value={[formData.longBreakAfter]}
                   onValueChange={([value]) =>
@@ -236,13 +238,13 @@ export function ProfileManager() {
                   min={2}
                   step={1}
                 />
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-muted-foreground">
                   {formData.longBreakAfter} sessions
                 </span>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-white flex items-center gap-2">
+                <Label className="text-primary-foreground flex items-center gap-2">
                   <Palette className="w-4 h-4" />
                   Color Theme
                 </Label>
@@ -303,7 +305,7 @@ export function ProfileManager() {
 
               <div className="flex-1">
                 <div className="font-medium">{profile.name}</div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-muted-foreground">
                   {profile.focusDuration}/{profile.shortBreakDuration}/
                   {profile.longBreakAfter}
                 </div>
@@ -311,7 +313,7 @@ export function ProfileManager() {
 
               <div className="flex items-center gap-2">
                 {!profile.isCustom && (
-                  <span className="text-xs text-gray-500 bg-gray-700 px-2 py-1 rounded">
+                  <span className="text-xs text-muted-foreground bg-primary/50 px-2 py-1 rounded">
                     Default
                   </span>
                 )}
@@ -320,7 +322,7 @@ export function ProfileManager() {
                   size="icon"
                   variant="ghost"
                   onClick={() => startEdit(profile)}
-                  className="text-gray-400 hover:text-white"
+                  className="text-muted-foreground hover:text-primary-foreground"
                 >
                   <Edit3 className="w-4 h-4" />
                 </Button>
@@ -331,7 +333,7 @@ export function ProfileManager() {
                   onClick={() => handleDelete(profile)}
                   disabled={!profile.isCustom}
                   className={cn(
-                    "text-gray-400 hover:text-red-400",
+                    "text-muted-foreground hover:text-red-400",
                     !profile.isCustom && "opacity-30 cursor-not-allowed",
                   )}
                 >
@@ -348,17 +350,17 @@ export function ProfileManager() {
         open={!!editingProfile}
         onOpenChange={(open) => !open && setEditingProfile(null)}
       >
-        <DialogContent className="sm:max-w-[500px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+        <DialogContent className="sm:max-w-[500px]  text-primary-foreground">
           <DialogHeader>
             <DialogTitle>Edit Profile</DialogTitle>
-            <DialogDescription className="text-gray-400">
+            <DialogDescription className="text-muted-foreground">
               Update your profile settings
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-6 py-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-name" className="text-white">
+              <Label htmlFor="edit-name" className="text-primary-foreground">
                 Profile Name
               </Label>
               <Input
@@ -367,12 +369,12 @@ export function ProfileManager() {
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                className="bg-[#2a2a2a] border-[#3a3a3a] text-white"
+                className="bg-[#2a2a2a] border-[#3a3a3a] text-primary-foreground"
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-white">
+              <Label className="text-primary-foreground">
                 Focus Duration: {formData.focusDuration} minutes
               </Label>
               <Slider
@@ -388,7 +390,7 @@ export function ProfileManager() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="text-white">Short Break</Label>
+                <Label className="text-primary-foreground">Short Break</Label>
                 <Slider
                   value={[formData.shortBreakDuration]}
                   onValueChange={([value]) =>
@@ -398,13 +400,13 @@ export function ProfileManager() {
                   min={1}
                   step={1}
                 />
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-muted-foreground">
                   {formData.shortBreakDuration} min
                 </span>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-white">Long Break</Label>
+                <Label className="text-primary-foreground">Long Break</Label>
                 <Slider
                   value={[formData.longBreakDuration]}
                   onValueChange={([value]) =>
@@ -414,14 +416,16 @@ export function ProfileManager() {
                   min={5}
                   step={5}
                 />
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-muted-foreground">
                   {formData.longBreakDuration} min
                 </span>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label className="text-white">Long Break After</Label>
+              <Label className="text-primary-foreground">
+                Long Break After
+              </Label>
               <Slider
                 value={[formData.longBreakAfter]}
                 onValueChange={([value]) =>
@@ -431,13 +435,13 @@ export function ProfileManager() {
                 min={2}
                 step={1}
               />
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-muted-foreground">
                 {formData.longBreakAfter} sessions
               </span>
             </div>
 
             <div className="space-y-2">
-              <Label className="text-white">Color Theme</Label>
+              <Label className="text-primary-foreground">Color Theme</Label>
               <div className="grid grid-cols-5 gap-2">
                 {colorOptions.map((color) => (
                   <Button

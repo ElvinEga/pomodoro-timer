@@ -49,8 +49,8 @@ export function EnhancedProfileSelector({
           <Button
             variant="outline"
             className={cn(
-              "justify-between w-full max-w-xs bg-[#1a1a1a] border-[#2a2a2a]",
-              "text-white hover:bg-[#2a2a2a] hover:text-white transition-all duration-200",
+              "justify-between w-full max-w-xs ",
+              "text-primary-foreground hover:bg-[#2a2a2a] hover:text-primary-foreground transition-all duration-200",
               "group hover:border-orange-500/50",
               className,
             )}
@@ -65,7 +65,7 @@ export function EnhancedProfileSelector({
               <span className="font-medium">{activeProfile.name}</span>
               <Badge
                 variant="secondary"
-                className="text-xs bg-[#2a2a2a] text-gray-400"
+                className="text-xs bg-[#2a2a2a] text-muted-foreground"
               >
                 {activeProfile.focusDuration}m
               </Badge>
@@ -75,10 +75,10 @@ export function EnhancedProfileSelector({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent
-          className="w-80 bg-[#1a1a1a] border-[#2a2a2a] text-white p-2"
+          className="w-80  text-primary-foreground p-2"
           align="center"
         >
-          <DropdownMenuLabel className="text-gray-400 text-xs uppercase tracking-wider">
+          <DropdownMenuLabel className="text-muted-foreground text-xs uppercase tracking-wider">
             Pomodoro Profiles
           </DropdownMenuLabel>
 
@@ -116,7 +116,7 @@ export function EnhancedProfileSelector({
                         </Badge>
                       )}
                     </div>
-                    <div className="text-xs text-gray-400 mt-1">
+                    <div className="text-xs text-muted-foreground mt-1">
                       {profile.focusDuration}m work •{" "}
                       {profile.shortBreakDuration}m break •{" "}
                       {profile.longBreakAfter} sessions
@@ -129,7 +129,7 @@ export function EnhancedProfileSelector({
                       animate={{ scale: 1 }}
                       className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center"
                     >
-                      <Check className="w-3 h-3 text-white" />
+                      <Check className="w-3 h-3 text-primary-foreground" />
                     </motion.div>
                   )}
                 </DropdownMenuItem>
@@ -174,10 +174,10 @@ function ProfileManagerDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] bg-[#1a1a1a] border-[#2a2a2a] text-white max-h-[80vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[600px]  text-primary-foreground max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl">Profile Manager</DialogTitle>
-          <DialogDescription className="text-gray-400">
+          <DialogDescription className="text-muted-foreground">
             Create and manage your Pomodoro profiles
           </DialogDescription>
         </DialogHeader>

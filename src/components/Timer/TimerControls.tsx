@@ -48,7 +48,7 @@ export function TimerControls({
               size="lg"
               className={cn(
                 "relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600",
-                "hover:from-orange-600 hover:to-orange-700 text-white font-semibold px-12 py-6",
+                "hover:from-orange-600 hover:to-orange-700 text-primary-foreground font-semibold px-12 py-6",
                 "text-lg rounded-full shadow-lg hover:shadow-orange-500/25",
                 "transition-all duration-300 transform hover:scale-105",
                 "animate-float",
@@ -77,7 +77,7 @@ export function TimerControls({
                 size="lg"
                 variant="outline"
                 className={cn(
-                  "border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white",
+                  "border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-primary-foreground",
                   "font-semibold px-8 py-6 rounded-full transition-all duration-300",
                   "hover:scale-105 hover:shadow-lg hover:shadow-orange-500/25",
                 )}
@@ -91,7 +91,7 @@ export function TimerControls({
                 size="lg"
                 variant="outline"
                 className={cn(
-                  "border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white",
+                  "border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-primary-foreground",
                   "font-semibold px-8 py-6 rounded-full transition-all duration-300",
                   "hover:scale-105",
                 )}
@@ -105,7 +105,7 @@ export function TimerControls({
               onClick={onReset}
               size="icon"
               variant="ghost"
-              className="w-14 h-14 text-gray-400 hover:text-white hover:bg-gray-800 rounded-full transition-all duration-300"
+              className="w-14 h-14 text-muted-foreground hover:text-primary-foreground hover:bg-gray-800 rounded-full transition-all duration-300"
             >
               <RotateCcw className="w-5 h-5" />
             </Button>

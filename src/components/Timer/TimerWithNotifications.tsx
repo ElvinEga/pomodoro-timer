@@ -85,7 +85,7 @@ function TimerContent() {
         toast({
           title: "Setting updated",
           description: `${key} has been ${value ? "enabled" : "disabled"}.`,
-          className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+          className: " text-primary-foreground",
         });
       } catch (error) {
         toast({
@@ -139,7 +139,7 @@ function TimerContent() {
             ? "Time for a well-deserved break."
             : "Ready to focus again?",
         duration: 5000,
-        className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+        className: " text-primary-foreground",
       });
 
       // Show activity input for focus sessions
@@ -173,7 +173,7 @@ function TimerContent() {
         toast({
           title: "Minimized to tray",
           description: "App is running in the background.",
-          className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+          className: " text-primary-foreground",
         });
       } catch (error) {
         console.warn("Failed to minimize to tray:", error);
@@ -206,7 +206,7 @@ function TimerContent() {
     ((totalDuration - state.timeRemaining) / totalDuration) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a] text-white p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a] text-primary-foreground p-6 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -240,9 +240,11 @@ function TimerContent() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="text-white font-bold text-sm">P</span>
+              <span className="text-primary-foreground font-bold text-sm">
+                P
+              </span>
             </motion.div>
-            <h1 className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            <h1 className="text-xl hidden sm:block font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Pomodoro Timer
             </h1>
           </div>
@@ -257,7 +259,7 @@ function TimerContent() {
                   handleSettingChange("soundAlerts", !settings.soundAlerts)
                 }
                 className={cn(
-                  "text-gray-400 hover:text-white",
+                  "text-muted-foreground hover:text-primary-foreground",
                   settings.soundAlerts && "text-orange-500",
                 )}
               >
@@ -281,7 +283,7 @@ function TimerContent() {
                   )
                 }
                 className={cn(
-                  "text-gray-400 hover:text-white",
+                  "text-muted-foreground hover:text-primary-foreground",
                   settings.desktopNotifications && "text-orange-500",
                 )}
               >
@@ -300,7 +302,7 @@ function TimerContent() {
                 size="icon"
                 onClick={() => setShowActivityView(!showActivityView)}
                 className={cn(
-                  "text-gray-400 hover:text-white",
+                  "text-muted-foreground hover:text-primary-foreground",
                   showActivityView && "text-orange-500 bg-orange-500/10",
                 )}
               >
@@ -314,7 +316,7 @@ function TimerContent() {
                 variant="ghost"
                 size="icon"
                 onClick={handleMinimizeToTray}
-                className="text-gray-400 hover:text-white"
+                className="text-muted-foreground hover:text-primary-foreground"
                 disabled={!settings.minimizeToTray}
               >
                 <Minimize2 className="w-4 h-4" />
@@ -326,7 +328,7 @@ function TimerContent() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-gray-400 hover:text-white"
+                className="text-muted-foreground hover:text-primary-foreground"
                 onClick={() => setSettingsOpen(true)}
               >
                 <Settings className="w-4 h-4" />
@@ -386,7 +388,7 @@ function TimerContent() {
                 transition={{ delay: 0.5 }}
                 className="mt-6 flex items-center gap-4 p-3 glass rounded-lg"
               >
-                <div className="flex items-center gap-2 text-sm text-gray-400">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock className="w-4 h-4" />
                   <span>Session {state.sessionsCompleted + 1}</span>
                 </div>
@@ -425,17 +427,17 @@ function TimerContent() {
               {/* Activity View Header */}
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-white">
+                  <h2 className="text-2xl font-bold text-primary-foreground">
                     Activity Tracking
                   </h2>
-                  <p className="text-gray-400">
+                  <p className="text-muted-foreground">
                     View your productivity patterns
                   </p>
                 </div>
                 <Button
                   variant="outline"
                   onClick={() => setShowActivityView(false)}
-                  className="border-[#2a2a2a] text-gray-300 hover:bg-[#2a2a2a]"
+                  className="bg-primary border-[#2a2a2a] text-gray-300 hover:bg-[#2a2a2a]"
                 >
                   Back to Timer
                 </Button>
@@ -451,9 +453,9 @@ function TimerContent() {
                 </div>
 
                 <div className="lg:col-span-2">
-                  <Card className="bg-[#1a1a1a] border-[#2a2a2a] h-full">
+                  <Card className=" h-full">
                     <CardHeader>
-                      <CardTitle className="text-white flex items-center gap-2">
+                      <CardTitle className="text-primary-foreground flex items-center gap-2">
                         <Calendar className="w-5 h-5" />
                         {format(selectedDate, "MMMM d, yyyy")}
                       </CardTitle>
@@ -469,9 +471,11 @@ function TimerContent() {
               </div>
 
               {/* Weekly/Monthly Stats */}
-              <Card className="bg-[#1a1a1a] border-[#2a2a2a]">
+              <Card className="">
                 <CardHeader>
-                  <CardTitle className="text-white">Statistics</CardTitle>
+                  <CardTitle className="text-primary-foreground">
+                    Statistics
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="week" className="w-full">
@@ -499,28 +503,34 @@ function TimerContent() {
                     <TabsContent value="week" className="mt-6">
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-primary-foreground">
                             12
                           </div>
-                          <div className="text-sm text-gray-400">Sessions</div>
+                          <div className="text-sm text-muted-foreground">
+                            Sessions
+                          </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-primary-foreground">
                             300
                           </div>
-                          <div className="text-sm text-gray-400">Focus Min</div>
+                          <div className="text-sm text-muted-foreground">
+                            Focus Min
+                          </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-primary-foreground">
                             4.2
                           </div>
-                          <div className="text-sm text-gray-400">
+                          <div className="text-sm text-muted-foreground">
                             Avg Rating
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">7</div>
-                          <div className="text-sm text-gray-400">
+                          <div className="text-2xl font-bold text-primary-foreground">
+                            7
+                          </div>
+                          <div className="text-sm text-muted-foreground">
                             Day Streak
                           </div>
                         </div>
@@ -530,30 +540,34 @@ function TimerContent() {
                     <TabsContent value="month" className="mt-6">
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-primary-foreground">
                             48
                           </div>
-                          <div className="text-sm text-gray-400">Sessions</div>
+                          <div className="text-sm text-muted-foreground">
+                            Sessions
+                          </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-primary-foreground">
                             1,200
                           </div>
-                          <div className="text-sm text-gray-400">Focus Min</div>
+                          <div className="text-sm text-muted-foreground">
+                            Focus Min
+                          </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-primary-foreground">
                             4.1
                           </div>
-                          <div className="text-sm text-gray-400">
+                          <div className="text-sm text-muted-foreground">
                             Avg Rating
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-primary-foreground">
                             21
                           </div>
-                          <div className="text-sm text-gray-400">
+                          <div className="text-sm text-muted-foreground">
                             Day Streak
                           </div>
                         </div>
@@ -563,30 +577,34 @@ function TimerContent() {
                     <TabsContent value="year" className="mt-6">
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-primary-foreground">
                             576
                           </div>
-                          <div className="text-sm text-gray-400">Sessions</div>
+                          <div className="text-sm text-muted-foreground">
+                            Sessions
+                          </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-primary-foreground">
                             14,400
                           </div>
-                          <div className="text-sm text-gray-400">Focus Min</div>
+                          <div className="text-sm text-muted-foreground">
+                            Focus Min
+                          </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-primary-foreground">
                             4.3
                           </div>
-                          <div className="text-sm text-gray-400">
+                          <div className="text-sm text-muted-foreground">
                             Avg Rating
                           </div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-primary-foreground">
                             156
                           </div>
-                          <div className="text-sm text-gray-400">
+                          <div className="text-sm text-muted-foreground">
                             Total Days
                           </div>
                         </div>

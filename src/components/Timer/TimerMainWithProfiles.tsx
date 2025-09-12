@@ -54,7 +54,7 @@ function TimerContent() {
     ((totalDuration - state.timeRemaining) / totalDuration) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a] text-white p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a] text-primary-foreground p-6 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -88,7 +88,9 @@ function TimerContent() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="text-white font-bold text-sm">P</span>
+              <span className="text-primary-foreground font-bold text-sm">
+                P
+              </span>
             </motion.div>
             <h1 className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Pomodoro Timer
@@ -99,21 +101,21 @@ function TimerContent() {
             <Button
               variant="ghost"
               size="icon"
-              className="text-gray-400 hover:text-white hover:bg-white/10"
+              className="text-muted-foreground hover:text-primary-foreground hover:bg-white/10"
             >
               <Minimize2 className="w-4 h-4" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="text-gray-400 hover:text-white hover:bg-white/10"
+              className="text-muted-foreground hover:text-primary-foreground hover:bg-white/10"
             >
               <BarChart3 className="w-4 h-4" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="text-gray-400 hover:text-white hover:bg-white/10"
+              className="text-muted-foreground hover:text-primary-foreground hover:bg-white/10"
               onClick={() => setSettingsOpen(true)}
             >
               <Settings className="w-4 h-4" />
@@ -171,9 +173,9 @@ function TimerContent() {
           className="mt-auto pt-8 text-center"
         >
           <div className="glass rounded-lg p-4">
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Current Session:{" "}
-              <span className="text-white font-medium">
+              <span className="text-primary-foreground font-medium">
                 {state.sessionsCompleted + 1}
               </span>
             </p>

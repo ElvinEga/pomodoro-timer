@@ -119,7 +119,7 @@ export function ActivityInputModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+      <DialogContent className="sm:max-w-[500px]  text-primary-foreground">
         <DialogHeader>
           <div className="flex items-center gap-3">
             <motion.div
@@ -131,7 +131,7 @@ export function ActivityInputModal({
             </motion.div>
             <div>
               <DialogTitle className="text-xl">{config.title}</DialogTitle>
-              <DialogDescription className="text-gray-400">
+              <DialogDescription className="text-muted-foreground">
                 {profileName} • {duration} minutes
               </DialogDescription>
             </div>
@@ -141,7 +141,7 @@ export function ActivityInputModal({
         <div className="space-y-6 py-4">
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-white">
+            <Label htmlFor="description" className="text-primary-foreground">
               Description
             </Label>
             <Textarea
@@ -153,13 +153,13 @@ export function ActivityInputModal({
                   ? "e.g., Completed project proposal, studied React hooks..."
                   : "e.g., Took a walk, had coffee, relaxed..."
               }
-              className="bg-[#2a2a2a] border-[#3a3a3a] text-white placeholder-gray-400 min-h-[80px]"
+              className="bg-[#2a2a2a] border-[#3a3a3a] text-primary-foreground placeholder-gray-400 min-h-[80px]"
             />
           </div>
 
           {/* Category */}
           <div className="space-y-2">
-            <Label className="text-white">Category</Label>
+            <Label className="text-primary-foreground">Category</Label>
             <div className="grid grid-cols-4 gap-2">
               {categories.map((cat) => (
                 <motion.button
@@ -185,7 +185,7 @@ export function ActivityInputModal({
           <div className="grid grid-cols-2 gap-4">
             {/* Productivity */}
             <div className="space-y-2">
-              <Label className="text-white flex items-center gap-2">
+              <Label className="text-primary-foreground flex items-center gap-2">
                 <Star className="w-4 h-4" />
                 Productivity
               </Label>
@@ -200,14 +200,14 @@ export function ActivityInputModal({
                       "p-1 rounded transition-all",
                       productivity >= rating
                         ? "text-yellow-500"
-                        : "text-gray-600 hover:text-gray-400",
+                        : "text-gray-600 hover:text-muted-foreground",
                     )}
                   >
                     <Star className="w-5 h-5 fill-current" />
                   </motion.button>
                 ))}
               </div>
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-muted-foreground">
                 {productivity === 1 && "Not productive"}
                 {productivity === 2 && "Slightly productive"}
                 {productivity === 3 && "Moderately productive"}
@@ -218,7 +218,7 @@ export function ActivityInputModal({
 
             {/* Energy */}
             <div className="space-y-2">
-              <Label className="text-white flex items-center gap-2">
+              <Label className="text-primary-foreground flex items-center gap-2">
                 <Zap className="w-4 h-4" />
                 Energy Level
               </Label>
@@ -233,14 +233,14 @@ export function ActivityInputModal({
                       "p-1 rounded transition-all",
                       energy >= rating
                         ? "text-orange-500"
-                        : "text-gray-600 hover:text-gray-400",
+                        : "text-gray-600 hover:text-muted-foreground",
                     )}
                   >
                     <Zap className="w-5 h-5 fill-current" />
                   </motion.button>
                 ))}
               </div>
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-muted-foreground">
                 {energy === 1 && "Very low energy"}
                 {energy === 2 && "Low energy"}
                 {energy === 3 && "Moderate energy"}
@@ -252,7 +252,7 @@ export function ActivityInputModal({
 
           {/* Notes */}
           <div className="space-y-2">
-            <Label htmlFor="notes" className="text-white">
+            <Label htmlFor="notes" className="text-primary-foreground">
               Additional Notes (optional)
             </Label>
             <Textarea
@@ -260,7 +260,7 @@ export function ActivityInputModal({
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Any additional thoughts or observations..."
-              className="bg-[#2a2a2a] border-[#3a3a3a] text-white placeholder-gray-400 min-h-[60px]"
+              className="bg-[#2a2a2a] border-[#3a3a3a] text-primary-foreground placeholder-gray-400 min-h-[60px]"
             />
           </div>
         </div>

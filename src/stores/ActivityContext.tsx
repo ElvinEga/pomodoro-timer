@@ -92,7 +92,7 @@ function useActivityStore() {
       toast({
         title: "Activity logged",
         description: "Your session has been recorded.",
-        className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+        className: " text-primary-foreground",
       });
     },
     [activities, saveActivities, toast],
@@ -120,7 +120,7 @@ function useActivityStore() {
       toast({
         title: "Activity deleted",
         description: "The activity has been removed.",
-        className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+        className: " text-primary-foreground",
       });
     },
     [activities, saveActivities, toast],
@@ -287,7 +287,7 @@ function useActivityStore() {
       toast({
         title: "Old activities cleared",
         description: `Activities older than ${daysToKeep} days have been removed.`,
-        className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+        className: " text-primary-foreground",
       });
     },
     [activities, saveActivities, toast],

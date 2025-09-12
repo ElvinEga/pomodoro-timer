@@ -71,8 +71,8 @@ export function ProfileSelector({
         <Button
           variant="outline"
           className={cn(
-            "justify-between w-full max-w-xs bg-[#1a1a1a] border-[#2a2a2a]",
-            "text-white hover:bg-[#2a2a2a] hover:text-white",
+            "justify-between w-full max-w-xs ",
+            "text-primary-foreground hover:bg-[#2a2a2a] hover:text-primary-foreground",
             className,
           )}
         >
@@ -82,7 +82,7 @@ export function ProfileSelector({
               style={{ backgroundColor: currentProfile.color }}
             />
             <span>{currentProfile.name}</span>
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-muted-foreground">
               ({currentProfile.focusDuration}m)
             </span>
           </div>
@@ -90,7 +90,7 @@ export function ProfileSelector({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-64 bg-[#1a1a1a] border-[#2a2a2a] text-white"
+        className="w-64  text-primary-foreground"
         align="center"
       >
         {defaultProfiles.map((profile) => (
@@ -109,7 +109,7 @@ export function ProfileSelector({
             />
             <div className="flex-1">
               <div className="font-medium">{profile.name}</div>
-              <div className="text-xs text-gray-400">
+              <div className="text-xs text-muted-foreground">
                 {profile.focusDuration}/{profile.shortBreakDuration}/
                 {profile.longBreakAfter}
               </div>

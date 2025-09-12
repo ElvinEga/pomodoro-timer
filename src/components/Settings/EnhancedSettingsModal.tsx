@@ -107,7 +107,7 @@ export function EnhancedSettingsModal({
       toast({
         title: "Settings saved",
         description: "Your preferences have been updated successfully.",
-        className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+        className: " text-primary-foreground",
       });
 
       onOpenChange(false);
@@ -147,7 +147,7 @@ export function EnhancedSettingsModal({
         toast({
           title: "Export successful",
           description: `${dataType} data has been exported.`,
-          className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+          className: " text-primary-foreground",
         });
       }
     } catch (error) {
@@ -179,7 +179,7 @@ export function EnhancedSettingsModal({
         toast({
           title: "Import successful",
           description: `${dataType} data has been imported.`,
-          className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+          className: " text-primary-foreground",
         });
       }
     } catch (error) {
@@ -197,7 +197,7 @@ export function EnhancedSettingsModal({
       toast({
         title: "Activities cleared",
         description: "Activities older than 30 days have been removed.",
-        className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+        className: " text-primary-foreground",
       });
     } catch (error) {
       toast({
@@ -222,12 +222,12 @@ export function EnhancedSettingsModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[700px] bg-[#1a1a1a] border-[#2a2a2a] text-white max-h-[80vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[700px]  text-primary-foreground max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <div>
               <DialogTitle className="text-xl">Settings</DialogTitle>
-              <DialogDescription className="text-gray-400">
+              <DialogDescription className="text-muted-foreground">
                 Customize your Pomodoro experience
               </DialogDescription>
             </div>
@@ -297,10 +297,13 @@ export function EnhancedSettingsModal({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="auto-start" className="text-white">
+                  <Label
+                    htmlFor="auto-start"
+                    className="text-primary-foreground"
+                  >
                     Auto-start Next Session
                   </Label>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     Automatically start the next timer when current one ends
                   </p>
                 </div>
@@ -315,10 +318,13 @@ export function EnhancedSettingsModal({
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="always-on-top" className="text-white">
+                  <Label
+                    htmlFor="always-on-top"
+                    className="text-primary-foreground"
+                  >
                     Always on Top
                   </Label>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     Keep the window above other applications
                   </p>
                 </div>
@@ -333,10 +339,13 @@ export function EnhancedSettingsModal({
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="minimize-to-tray" className="text-white">
+                  <Label
+                    htmlFor="minimize-to-tray"
+                    className="text-primary-foreground"
+                  >
                     Minimize to Tray
                   </Label>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     Hide window in system tray instead of closing
                   </p>
                 </div>
@@ -355,10 +364,13 @@ export function EnhancedSettingsModal({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="desktop-notifications" className="text-white">
+                  <Label
+                    htmlFor="desktop-notifications"
+                    className="text-primary-foreground"
+                  >
                     Desktop Notifications
                   </Label>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     Show system notifications for session changes
                   </p>
                 </div>
@@ -372,10 +384,10 @@ export function EnhancedSettingsModal({
               </div>
 
               <div className="p-4 bg-[#2a2a2a] rounded-lg border border-[#3a3a3a]">
-                <h4 className="text-white font-medium mb-2">
+                <h4 className="text-primary-foreground font-medium mb-2">
                   Notification Settings
                 </h4>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   {tempSettings.desktopNotifications
                     ? "Desktop notifications are enabled"
                     : "Desktop notifications are disabled"}
@@ -396,10 +408,13 @@ export function EnhancedSettingsModal({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label htmlFor="sound-alerts" className="text-white">
+                  <Label
+                    htmlFor="sound-alerts"
+                    className="text-primary-foreground"
+                  >
                     Sound Alerts
                   </Label>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-muted-foreground">
                     Play sounds for session transitions
                   </p>
                 </div>
@@ -415,7 +430,9 @@ export function EnhancedSettingsModal({
               {tempSettings.soundAlerts && (
                 <div className="space-y-4 p-4 bg-[#2a2a2a] rounded-lg border border-[#3a3a3a]">
                   <div>
-                    <Label className="text-white">Sound Volume</Label>
+                    <Label className="text-primary-foreground">
+                      Sound Volume
+                    </Label>
                     <div className="flex items-center gap-4 mt-2">
                       <Slider
                         value={[soundVolume]}
@@ -425,14 +442,16 @@ export function EnhancedSettingsModal({
                         step={5}
                         className="flex-1"
                       />
-                      <span className="text-sm text-gray-400 w-12">
+                      <span className="text-sm text-muted-foreground w-12">
                         {soundVolume}%
                       </span>
                     </div>
                   </div>
 
                   <div>
-                    <Label className="text-white mb-2 block">Test Sounds</Label>
+                    <Label className="text-primary-foreground mb-2 block">
+                      Test Sounds
+                    </Label>
                     <div className="grid grid-cols-2 gap-2">
                       <Button
                         size="sm"
@@ -532,7 +551,9 @@ export function EnhancedSettingsModal({
               </div>
 
               <div className="p-4 bg-[#2a2a2a] rounded-lg border border-[#3a3a3a]">
-                <h4 className="text-white font-medium mb-2">Data Management</h4>
+                <h4 className="text-primary-foreground font-medium mb-2">
+                  Data Management
+                </h4>
                 <div className="space-y-2">
                   <Button
                     size="sm"

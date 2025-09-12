@@ -58,7 +58,7 @@ export function TimerDisplay({
 
       {/* Timer display */}
       <div className="relative">
-        <div className="font-mono text-7xl font-bold text-white mb-2 tabular-nums">
+        <div className="font-mono text-7xl font-bold text-primary-foreground mb-2 tabular-nums">
           {String(minutes).padStart(2, "0")}
           <span className="animate-pulse">:</span>
           {String(seconds).padStart(2, "0")}
@@ -86,7 +86,7 @@ export function TimerDisplay({
             )}
           />
         ))}
-        <span className="ml-2 text-xs text-gray-400">
+        <span className="ml-2 text-xs text-muted-foreground">
           {sessionsCompleted} completed
         </span>
       </div>

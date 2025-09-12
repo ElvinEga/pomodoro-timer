@@ -39,13 +39,13 @@ export function TimerMain() {
             ? "Time for a well-deserved break."
             : "Ready to focus again?",
         duration: 5000,
-        className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+        className: " text-primary-foreground",
       });
     }
   }, [state.timeRemaining, state.isRunning, state.currentSession, toast]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a] text-white p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a] text-primary-foreground p-6 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-orange-500/10 to-transparent rounded-full blur-3xl animate-pulse" />
@@ -61,7 +61,9 @@ export function TimerMain() {
         >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">P</span>
+              <span className="text-primary-foreground font-bold text-sm">
+                P
+              </span>
             </div>
             <h1 className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               Pomodoro Timer
@@ -72,21 +74,21 @@ export function TimerMain() {
             <Button
               variant="ghost"
               size="icon"
-              className="text-gray-400 hover:text-white hover:bg-white/10"
+              className="text-muted-foreground hover:text-primary-foreground hover:bg-white/10"
             >
               <Minimize2 className="w-4 h-4" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="text-gray-400 hover:text-white hover:bg-white/10"
+              className="text-muted-foreground hover:text-primary-foreground hover:bg-white/10"
             >
               <BarChart3 className="w-4 h-4" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="text-gray-400 hover:text-white hover:bg-white/10"
+              className="text-muted-foreground hover:text-primary-foreground hover:bg-white/10"
             >
               <Settings className="w-4 h-4" />
             </Button>
@@ -146,9 +148,9 @@ export function TimerMain() {
           className="mt-auto pt-8 text-center"
         >
           <div className="glass rounded-lg p-4">
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Current Session:{" "}
-              <span className="text-white font-medium">
+              <span className="text-primary-foreground font-medium">
                 {state.sessionsCompleted + 1}
               </span>
             </p>

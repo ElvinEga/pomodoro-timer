@@ -105,7 +105,7 @@ export function useTimer() {
   const [state, dispatch] = useReducer(timerReducer, initialState);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: number | null = null;
 
     if (state.isRunning && !state.isPaused) {
       interval = setInterval(() => {

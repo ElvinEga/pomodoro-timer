@@ -1,4 +1,3 @@
-import React from "react";
 import { TimerMain } from "@/components/Timer/TimerMain";
 import { Toaster } from "@/components/ui/toaster";
 

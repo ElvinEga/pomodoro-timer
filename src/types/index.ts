@@ -1,27 +1,39 @@
 // src/types/index.ts
-export interface Profile {
+export interface Activity {
   id: string;
-  name: string;
-  focusDuration: number; // in minutes
-  shortBreakDuration: number; // in minutes
-  longBreakDuration: number; // in minutes
-  longBreakAfter: number; // number of sessions
-  color: string;
-  isCustom: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  description: string;
+  category: string;
+  sessionType: "focus" | "short-break" | "long-break";
+  duration: number; // in minutes
+  timestamp: Date;
+  profileId: string;
+  profileName: string;
 }
 
-export interface ProfileSettings {
-  autoStartNextSession: boolean;
-  soundAlerts: boolean;
-  desktopNotifications: boolean;
-  alwaysOnTop: boolean;
-  minimizeToTray: boolean;
+export interface ActivityInput {
+  description: string;
+  category: string;
+  productivity: number; // 1-5 rating
+  energy: number; // 1-5 rating
+  notes?: string;
 }
 
-export interface AppSettings {
-  profiles: Profile[];
-  activeProfileId: string;
-  settings: ProfileSettings;
+export interface DailySummary {
+  date: Date;
+  totalFocusTime: number;
+  totalBreakTime: number;
+  sessionsCompleted: number;
+  activities: Activity[];
+  productivity: number; // average rating
+  energy: number; // average rating
+}
+
+export interface ActivityStats {
+  totalSessions: number;
+  totalFocusTime: number;
+  totalBreakTime: number;
+  averageSessionLength: number;
+  streakDays: number;
+  mostProductiveTime: string;
+  favoriteCategory: string;
 }

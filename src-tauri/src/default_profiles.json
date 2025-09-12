@@ -1,0 +1,60 @@
+{
+  "profiles": [
+    {
+      "id": "work",
+      "name": "Work",
+      "focusDuration": 25,
+      "shortBreakDuration": 5,
+      "longBreakDuration": 15,
+      "longBreakAfter": 4,
+      "color": "#ff6b35",
+      "isCustom": false,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "reading",
+      "name": "Reading",
+      "focusDuration": 45,
+      "shortBreakDuration": 10,
+      "longBreakDuration": 20,
+      "longBreakAfter": 3,
+      "color": "#8b5cf6",
+      "isCustom": false,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "study",
+      "name": "Study",
+      "focusDuration": 30,
+      "shortBreakDuration": 5,
+      "longBreakDuration": 15,
+      "longBreakAfter": 4,
+      "color": "#10b981",
+      "isCustom": false,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "creative",
+      "name": "Creative",
+      "focusDuration": 90,
+      "shortBreakDuration": 15,
+      "longBreakDuration": 30,
+      "longBreakAfter": 2,
+      "color": "#f59e0b",
+      "isCustom": false,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "activeProfileId": "work",
+  "settings": {
+    "autoStartNextSession": false,
+    "soundAlerts": true,
+    "desktopNotifications": true,
+    "alwaysOnTop": false,
+    "minimizeToTray": true
+  }
+}

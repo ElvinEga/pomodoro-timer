@@ -1,0 +1,7 @@
+{
+  "autoStartNextSession": false,
+  "soundAlerts": true,
+  "desktopNotifications": true,
+  "alwaysOnTop": false,
+  "minimizeToTray": true
+}

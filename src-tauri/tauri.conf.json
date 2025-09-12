@@ -1,20 +1,25 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "pomodoro-timer",
+  "productName": "Pomodoro Timer",
   "version": "0.1.0",
   "identifier": "com.elvinega.pomodoro-timer",
   "build": {
     "beforeDevCommand": "bun run dev",
-    "devUrl": "http://localhost:1420",
+    "devUrl": "http://localhost:3000",
     "beforeBuildCommand": "bun run build",
     "frontendDist": "../dist"
   },
   "app": {
     "windows": [
       {
-        "title": "pomodoro-timer",
-        "width": 800,
-        "height": 600
+        "title": "Pomodoro Timer",
+        "width": 400,
+        "height": 600,
+        "resizable": false,
+        "center": true,
+        "decorations": true,
+        "alwaysOnTop": false,
+        "transparent": false
       }
     ],
     "security": {

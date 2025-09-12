@@ -1,3 +1,4 @@
+// src/types/index.ts
 export interface Profile {
   id: string;
   name: string;
@@ -7,32 +8,20 @@ export interface Profile {
   longBreakAfter: number; // number of sessions
   color: string;
   isCustom: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-export interface Activity {
-  id: string;
-  description: string;
-  category: string;
-  sessionType: "focus" | "short-break" | "long-break";
-  duration: number; // in minutes
-  timestamp: Date;
-  profileId: string;
+export interface ProfileSettings {
+  autoStartNextSession: boolean;
+  soundAlerts: boolean;
+  desktopNotifications: boolean;
+  alwaysOnTop: boolean;
+  minimizeToTray: boolean;
 }
 
-export interface TimerState {
-  isRunning: boolean;
-  isPaused: boolean;
-  currentSession: "focus" | "short-break" | "long-break";
-  timeRemaining: number; // in seconds
-  sessionsCompleted: number;
-  currentProfile: Profile;
+export interface AppSettings {
+  profiles: Profile[];
+  activeProfileId: string;
+  settings: ProfileSettings;
 }
-
-export type TimerAction =
-  | { type: "START" }
-  | { type: "PAUSE" }
-  | { type: "RESUME" }
-  | { type: "RESET" }
-  | { type: "TICK" }
-  | { type: "SESSION_COMPLETE" }
-  | { type: "SET_PROFILE"; payload: Profile };

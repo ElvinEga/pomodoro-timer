@@ -113,14 +113,10 @@ export function useTimer() {
       }, 1000);
     }
 
-    if (state.timeRemaining === 0 && state.isRunning) {
-      dispatch({ type: "SESSION_COMPLETE" });
-    }
-
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [state.isRunning, state.isPaused, state.timeRemaining]);
+  }, [state.isRunning, state.isPaused]);
 
   const start = useCallback(() => dispatch({ type: "START" }), []);
   const pause = useCallback(() => dispatch({ type: "PAUSE" }), []);
@@ -128,6 +124,10 @@ export function useTimer() {
   const reset = useCallback(() => dispatch({ type: "RESET" }), []);
   const setProfile = useCallback(
     (profile: Profile) => dispatch({ type: "SET_PROFILE", payload: profile }),
+    [],
+  );
+  const completeSession = useCallback(
+    () => dispatch({ type: "SESSION_COMPLETE" }),
     [],
   );
 
@@ -138,5 +138,6 @@ export function useTimer() {
     resume,
     reset,
     setProfile,
+    completeSession,
   };
 }

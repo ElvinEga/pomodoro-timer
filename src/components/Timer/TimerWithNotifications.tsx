@@ -36,7 +36,8 @@ import { cn } from "@/lib/utils";
 function TimerContent() {
   const { activeProfile, settings, updateSettings } = useProfileContext();
   const { addActivity } = useActivityContext();
-  const { state, start, pause, resume, reset, setProfile } = useTimer();
+  const { state, start, pause, resume, reset, setProfile, completeSession } =
+    useTimer();
   const [showActivityInput, setShowActivityInput] = useState(false);
   const [pendingActivity, setPendingActivity] = useState<any>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -53,13 +54,22 @@ function TimerContent() {
   // Handle session completion with notifications
   useEffect(() => {
     if (state.timeRemaining === 0 && state.isRunning) {
-      handleSessionComplete();
+      const completedSession = state.currentSession;
+      const completedDuration =
+        completedSession === "focus"
+          ? state.currentProfile.focusDuration
+          : completedSession === "short-break"
+            ? state.currentProfile.shortBreakDuration
+            : state.currentProfile.longBreakDuration;
+      completeSession();
+      handleSessionComplete(completedSession, completedDuration);
     }
   }, [
     state.timeRemaining,
     state.isRunning,
     state.currentSession,
     state.currentProfile,
+    completeSession,
   ]);
 
   // ADD THE MISSING FUNCTION HERE
@@ -88,69 +98,72 @@ function TimerContent() {
     [settings, updateSettings, toast],
   );
 
-  const handleSessionComplete = useCallback(async () => {
-    const sessionType = state.currentSession;
-    const nextSession = sessionType === "focus" ? "break" : "focus";
-
-    // Play sound notification
-    if (settings.soundAlerts) {
-      if (sessionType === "focus") {
-        audioNotification.playCompleteSequence();
-      } else {
-        audioNotification.playSound("break");
+  const handleSessionComplete = useCallback(
+    async (
+      sessionType: "focus" | "short-break" | "long-break",
+      duration: number,
+    ) => {
+      // Play sound notification
+      if (settings.soundAlerts) {
+        if (sessionType === "focus") {
+          audioNotification.playCompleteSequence();
+        } else {
+          audioNotification.playSound("break");
+        }
       }
-    }
 
-    // Show desktop notification
-    if (settings.desktopNotifications) {
-      try {
-        const title =
-          sessionType === "focus" ? "Focus Complete!" : "Break Time Over!";
-        const body =
+      // Show desktop notification
+      if (settings.desktopNotifications) {
+        try {
+          const title =
+            sessionType === "focus" ? "Focus Complete!" : "Break Time Over!";
+          const body =
+            sessionType === "focus"
+              ? `Great job! Time for a ${state.currentSession === "long-break" ? "long" : "short"} break.`
+              : "Ready to focus again? Let's get back to work!";
+
+          await invoke("show_notification", { title, body });
+        } catch (error) {
+          console.warn("Failed to show notification:", error);
+        }
+      }
+
+      // Show in-app notification
+      toast({
+        title:
           sessionType === "focus"
-            ? `Great job! Time for a ${state.currentSession === "focus" && state.sessionsCompleted % state.currentProfile.longBreakAfter === 0 ? "long" : "short"} break.`
-            : "Ready to focus again? Let's get back to work!";
+            ? "Focus session complete!"
+            : "Break time over!",
+        description:
+          sessionType === "focus"
+            ? "Time for a well-deserved break."
+            : "Ready to focus again?",
+        duration: 5000,
+        className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
+      });
 
-        await invoke("show_notification", { title, body });
-      } catch (error) {
-        console.warn("Failed to show notification:", error);
+      // Show activity input for focus sessions
+      if (sessionType === "focus") {
+        setTimeout(() => {
+          setPendingActivity({
+            sessionType,
+            duration,
+            profileName: state.currentProfile.name,
+            profileId: state.currentProfile.id,
+          });
+          setShowActivityInput(true);
+        }, 1000);
       }
-    }
 
-    // Show in-app notification
-    toast({
-      title:
-        sessionType === "focus"
-          ? "Focus session complete!"
-          : "Break time over!",
-      description:
-        sessionType === "focus"
-          ? "Time for a well-deserved break."
-          : "Ready to focus again?",
-      duration: 5000,
-      className: "bg-[#1a1a1a] border-[#2a2a2a] text-white",
-    });
-
-    // Show activity input for focus sessions
-    if (sessionType === "focus") {
-      setTimeout(() => {
-        setPendingActivity({
-          sessionType: state.currentSession,
-          duration: state.currentProfile.focusDuration,
-          profileName: state.currentProfile.name,
-          profileId: state.currentProfile.id,
-        });
-        setShowActivityInput(true);
-      }, 1000);
-    }
-
-    // Auto-start next session if enabled
-    if (settings.autoStartNextSession && sessionType !== "focus") {
-      setTimeout(() => {
-        start();
-      }, 3000);
-    }
-  }, [state, settings, start, toast]);
+      // Auto-start next session if enabled
+      if (settings.autoStartNextSession && sessionType !== "focus") {
+        setTimeout(() => {
+          start();
+        }, 1000);
+      }
+    },
+    [state, settings, audioNotification, toast, start],
+  );
 
   const handleMinimizeToTray = async () => {
     if (settings.minimizeToTray) {

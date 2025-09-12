@@ -4,9 +4,9 @@ use serde_json::Value;
 use std::fs;
 use std::path::PathBuf;
 use tauri::{
-    menu::{Menu, MenuItem, PredefinedMenuItem, Submenu},
+    menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
-    Manager, Runtime,
+    Emitter, Manager, Runtime,
 };
 
 #[tauri::command]
@@ -21,7 +21,7 @@ async fn read_profiles(app_handle: tauri::AppHandle) -> Result<String, String> {
     let profiles_path = app_dir.join("profiles.json");
 
     if !profiles_path.exists() {
-        let default_profiles = include_str!("../default_profiles.json");
+        let default_profiles = include_str!("default_profiles.json");
         fs::write(&profiles_path, default_profiles)
             .map_err(|e| format!("failed to write default profiles: {}", e))?;
         return Ok(default_profiles.to_string());
@@ -82,7 +82,7 @@ async fn read_settings(app_handle: tauri::AppHandle) -> Result<String, String> {
     let settings_path = app_dir.join("settings.json");
 
     if !settings_path.exists() {
-        let default_settings = include_str!("../default_settings.json");
+        let default_settings = include_str!("default_settings.json");
         fs::write(&settings_path, default_settings)
             .map_err(|e| format!("failed to write default settings: {}", e))?;
         return Ok(default_settings.to_string());

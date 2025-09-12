@@ -56,6 +56,7 @@ export function ProfileManager() {
       setIsCreating(false);
       resetForm();
     } catch (error) {
+      console.error(error);
       toast({
         title: "Error",
         description: "Failed to create profile. Please try again.",
@@ -77,6 +78,7 @@ export function ProfileManager() {
       setEditingProfile(null);
       resetForm();
     } catch (error) {
+      console.error(error);
       toast({
         title: "Error",
         description: "Failed to update profile. Please try again.",

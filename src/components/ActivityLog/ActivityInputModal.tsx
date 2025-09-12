@@ -110,7 +110,12 @@ export function ActivityInputModal({
     },
   };
 
-  const config = sessionConfig[sessionType];
+  // FIX: Handle undefined sessionType with fallback
+  const effectiveSessionType = sessionType || "focus";
+  const config = sessionConfig[effectiveSessionType] || sessionConfig["focus"];
+
+  // FIX: Don't render if modal shouldn't be open
+  if (!open) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -194,7 +199,7 @@ export function ActivityInputModal({
                     className={cn(
                       "p-1 rounded transition-all",
                       productivity >= rating
-                        ? "text-orange-500"
+                        ? "text-yellow-500"
                         : "text-gray-600 hover:text-gray-400",
                     )}
                   >
@@ -227,7 +232,7 @@ export function ActivityInputModal({
                     className={cn(
                       "p-1 rounded transition-all",
                       energy >= rating
-                        ? "text-yellow-500"
+                        ? "text-orange-500"
                         : "text-gray-600 hover:text-gray-400",
                     )}
                   >

@@ -131,7 +131,10 @@ export function EnhancedSettingsModal({
   const handleExportData = async (
     dataType: "activities" | "profiles" | "settings"
   ) => {
+    setIsLoading(true);
     try {
+      console.log("Starting export for:", dataType);
+
       const filePath = await save({
         filters: [
           {
@@ -144,27 +147,46 @@ export function EnhancedSettingsModal({
         }.json`,
       });
 
+      console.log("Selected file path:", filePath);
+
       if (filePath) {
-        await invoke("export_data", { dataType, filePath });
+        console.log("Invoking export_data command with:", {
+          dataType,
+          filePath,
+        });
+        await invoke("export_data", {
+          dataType: dataType,
+          filePath: filePath,
+        });
+
+        console.log("Export successful");
         toast({
           title: "Export successful",
           description: `${dataType} data has been exported.`,
           className: " text-primary-foreground",
         });
+      } else {
+        console.log("No file path selected - user cancelled");
       }
     } catch (error) {
+      console.error("Export error:", error);
       toast({
         title: "Export failed",
-        description: "Failed to export data. Please try again.",
+        description: `Failed to export data: ${String(error)}`,
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleImportData = async (
     dataType: "activities" | "profiles" | "settings"
   ) => {
+    setIsLoading(true);
     try {
+      console.log("Starting import for:", dataType);
+
       const selected = await openDialog({
         filters: [
           {
@@ -175,21 +197,43 @@ export function EnhancedSettingsModal({
         multiple: false,
       });
 
+      console.log("Selected file:", selected);
+
       if (selected) {
         const filePath = Array.isArray(selected) ? selected[0] : selected;
-        await invoke("import_data", { dataType, filePath });
+        console.log("Invoking import_data command with:", {
+          dataType,
+          filePath,
+        });
+
+        await invoke("import_data", {
+          dataType: dataType,
+          filePath: filePath,
+        });
+
+        console.log("Import successful");
         toast({
           title: "Import successful",
           description: `${dataType} data has been imported.`,
           className: " text-primary-foreground",
         });
+
+        // Refresh the page or reload data after import
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } else {
+        console.log("No file selected - user cancelled");
       }
     } catch (error) {
+      console.error("Import error:", error);
       toast({
         title: "Import failed",
-        description: "Failed to import data. Please check the file format.",
+        description: `Failed to import data: ${String(error)}`,
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -502,25 +546,40 @@ export function EnhancedSettingsModal({
                 <Button
                   variant="outline"
                   onClick={() => handleExportData("activities")}
-                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2"
+                  disabled={isLoading}
+                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2 disabled:opacity-50"
                 >
-                  <Download className="w-4 h-4" />
+                  {isLoading ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Download className="w-4 h-4" />
+                  )}
                   Export Activities
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => handleExportData("profiles")}
-                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2"
+                  disabled={isLoading}
+                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2 disabled:opacity-50"
                 >
-                  <Download className="w-4 h-4" />
+                  {isLoading ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Download className="w-4 h-4" />
+                  )}
                   Export Profiles
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => handleExportData("settings")}
-                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2"
+                  disabled={isLoading}
+                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2 disabled:opacity-50"
                 >
-                  <Download className="w-4 h-4" />
+                  {isLoading ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Download className="w-4 h-4" />
+                  )}
                   Export Settings
                 </Button>
               </div>
@@ -529,25 +588,40 @@ export function EnhancedSettingsModal({
                 <Button
                   variant="outline"
                   onClick={() => handleImportData("activities")}
-                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2"
+                  disabled={isLoading}
+                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2 disabled:opacity-50"
                 >
-                  <Upload className="w-4 h-4" />
+                  {isLoading ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Upload className="w-4 h-4" />
+                  )}
                   Import Activities
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => handleImportData("profiles")}
-                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2"
+                  disabled={isLoading}
+                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2 disabled:opacity-50"
                 >
-                  <Upload className="w-4 h-4" />
+                  {isLoading ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Upload className="w-4 h-4" />
+                  )}
                   Import Profiles
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => handleImportData("settings")}
-                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2"
+                  disabled={isLoading}
+                  className="border-[#3a3a3a] text-gray-300 hover:bg-[#3a3a3a] flex items-center gap-2 disabled:opacity-50"
                 >
-                  <Upload className="w-4 h-4" />
+                  {isLoading ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Upload className="w-4 h-4" />
+                  )}
                   Import Settings
                 </Button>
               </div>

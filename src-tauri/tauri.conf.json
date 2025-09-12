@@ -14,12 +14,15 @@
       {
         "title": "Pomodoro Timer",
         "width": 400,
-        "height": 600,
+        "height": 700,
         "resizable": false,
         "center": true,
         "decorations": true,
         "alwaysOnTop": false,
-        "transparent": false
+        "transparent": false,
+        "acceptFirstMouse": true,
+        "tabbingIdentifier": "pomodoro-timer",
+        "additionalBrowserArgs": "--enable-features=WebContentsForceDark"
       }
     ],
     "security": {
@@ -35,6 +38,10 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "resources": [],
+    "category": "Productivity",
+    "shortDescription": "A modern Pomodoro Timer for focused work sessions",
+    "longDescription": "A sleek, dark-themed Pomodoro Timer with customizable profiles, activity tracking, and comprehensive productivity analytics."
   }
 }

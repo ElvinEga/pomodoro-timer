@@ -123,13 +123,13 @@ export function EnhancedSettingsModal({
   };
 
   const handleTestSound = async (
-    soundType: "start" | "pause" | "complete" | "break" | "notification",
+    soundType: "start" | "pause" | "complete" | "break" | "notification"
   ) => {
     audioNotification.playSound(soundType);
   };
 
   const handleExportData = async (
-    dataType: "activities" | "profiles" | "settings",
+    dataType: "activities" | "profiles" | "settings"
   ) => {
     try {
       const filePath = await save({
@@ -139,7 +139,9 @@ export function EnhancedSettingsModal({
             extensions: ["json"],
           },
         ],
-        defaultPath: `${dataType}-${new Date().toISOString().split("T")[0]}.json`,
+        defaultPath: `${dataType}-${
+          new Date().toISOString().split("T")[0]
+        }.json`,
       });
 
       if (filePath) {
@@ -160,7 +162,7 @@ export function EnhancedSettingsModal({
   };
 
   const handleImportData = async (
-    dataType: "activities" | "profiles" | "settings",
+    dataType: "activities" | "profiles" | "settings"
   ) => {
     try {
       const selected = await openDialog({
@@ -268,28 +270,28 @@ export function EnhancedSettingsModal({
               className="data-[state=active]:bg-orange-500"
             >
               <Clock className="w-4 h-4 mr-2" />
-              General
+              {/* General */}
             </TabsTrigger>
             <TabsTrigger
               value="notifications"
               className="data-[state=active]:bg-orange-500"
             >
               <Bell className="w-4 h-4 mr-2" />
-              Notifications
+              {/* Notification */}
             </TabsTrigger>
             <TabsTrigger
               value="audio"
               className="data-[state=active]:bg-orange-500"
             >
               <Volume2 className="w-4 h-4 mr-2" />
-              Audio
+              {/* Audio */}
             </TabsTrigger>
             <TabsTrigger
               value="data"
               className="data-[state=active]:bg-orange-500"
             >
               <Download className="w-4 h-4 mr-2" />
-              Data
+              {/* Data */}
             </TabsTrigger>
           </TabsList>
 

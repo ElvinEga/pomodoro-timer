@@ -10,10 +10,10 @@ import { EnhancedProfileSelector } from "@/components/Settings/EnhancedProfileSe
 import { ActivityInputModal } from "@/components/ActivityLog/ActivityInputModal";
 import { DailyLog } from "@/components/ActivityLog/DailyLog";
 import { ActivityCalendar } from "@/components/ActivityLog/ActivityCalendar";
+import { StatisticsCharts } from "@/components/ActivityLog/StatisticsCharts";
 import { EnhancedSettingsModal } from "@/components/Settings/EnhancedSettingsModal";
 import {
   Settings,
-  BarChart3,
   Minimize2,
   Calendar,
   Activity,
@@ -461,7 +461,7 @@ function TimerContent() {
                 </div>
 
                 <div className="lg:col-span-2">
-                  <Card className=" h-full">
+                  <Card className="bg-[#1a1a1a] border-[#2a2a2a] h-full">
                     <CardHeader>
                       <CardTitle className="text-primary-foreground flex items-center gap-2">
                         <Calendar className="w-5 h-5" />
@@ -478,11 +478,11 @@ function TimerContent() {
                 </div>
               </div>
 
-              {/* Weekly/Monthly Stats */}
-              <Card className="">
+              {/* Period Statistics */}
+              <Card className="bg-[#1a1a1a] border-[#2a2a2a]">
                 <CardHeader>
                   <CardTitle className="text-primary-foreground">
-                    Statistics
+                    Period Statistics
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -590,7 +590,7 @@ function TimerContent() {
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            576
+                            {yearStats.sessions}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Sessions
@@ -598,7 +598,7 @@ function TimerContent() {
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            14,400
+                            {yearStats.focusMinutes.toLocaleString()}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Focus Min
@@ -606,7 +606,9 @@ function TimerContent() {
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            4.3
+                            {yearStats.averageRating > 0
+                              ? yearStats.averageRating.toFixed(1)
+                              : "—"}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Avg Rating
@@ -614,7 +616,7 @@ function TimerContent() {
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-primary-foreground">
-                            156
+                            {yearStats.totalDays}
                           </div>
                           <div className="text-sm text-muted-foreground">
                             Total Days
@@ -625,6 +627,9 @@ function TimerContent() {
                   </Tabs>
                 </CardContent>
               </Card>
+
+              {/* Additional Statistics Charts */}
+              <StatisticsCharts />
             </motion.div>
           )}
         </AnimatePresence>

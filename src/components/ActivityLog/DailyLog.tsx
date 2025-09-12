@@ -49,8 +49,7 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
       : activities.filter((a) => a.category === filterCategory);
 
   const summary = dailySummaries.find(
-    (ds) =>
-      format(ds.date, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd"),
+    (ds) => format(ds.date, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd")
   );
 
   const categories = [...new Set(activities.map((a) => a.category))];
@@ -94,10 +93,10 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-primary-foreground">
+          <h2 className="text-xl font-bold text-primary-foreground">
             {formatDate(selectedDate)}
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             {activities.length} activities • {summary?.totalFocusTime || 0}min
             focus time
           </p>
@@ -221,7 +220,9 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
                         {/* Icon and time */}
                         <div className="flex items-center gap-3">
                           <div
-                            className={`w-2 h-2 rounded-full ${getCategoryColor(activity.category)}`}
+                            className={`w-2 h-2 rounded-full ${getCategoryColor(
+                              activity.category
+                            )}`}
                           />
                           <div className="text-sm text-muted-foreground">
                             {format(activity.timestamp, "HH:mm")}
@@ -282,7 +283,7 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
                                       "w-3 h-3",
                                       i < (activity as any).productivity
                                         ? "text-yellow-500 fill-current"
-                                        : "text-gray-600",
+                                        : "text-gray-600"
                                     )}
                                   />
                                 ))}
@@ -302,7 +303,7 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
                                         "w-3 h-3",
                                         i < (activity as any).energy
                                           ? "text-orange-500 fill-current"
-                                          : "text-gray-600",
+                                          : "text-gray-600"
                                       )}
                                     />
                                   ))}

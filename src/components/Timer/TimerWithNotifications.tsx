@@ -46,13 +46,7 @@ function TimerContent() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const { toast } = useToast();
-  const {
-    weekStats,
-    monthStats,
-    yearStats,
-    categoryStats,
-    mostProductiveTime,
-  } = useStatistics();
+  const { weekStats, monthStats, yearStats } = useStatistics();
 
   // Update timer when profile changes
   React.useEffect(() => {

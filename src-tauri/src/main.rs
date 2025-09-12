@@ -2,6 +2,7 @@
 
 use std::fs;
 use std::path::PathBuf;
+use tauri::api::notification::Notification;
 use tauri::{Manager, SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem};
 
 #[tauri::command]
@@ -137,8 +138,93 @@ fn main() {
             read_activities,
             write_activities,
             read_settings,
-            write_settings
+            write_settings,
+            show_notification,
+            request_notification_permission,
+            set_always_on_top,
+            minimize_to_tray,
+            export_data,
+            import_data,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+#[tauri::command]
+async fn show_notification(title: String, body: String) -> Result<(), String> {
+    Notification::new(&title)
+        .body(&body)
+        .icon("icon.png")
+        .show()
+        .map_err(|e| format!("Failed to show notification: {}", e))
+}
+
+#[tauri::command]
+async fn request_notification_permission() -> Result<bool, String> {
+    // On desktop, notifications are typically enabled by default
+    Ok(true)
+}
+
+#[tauri::command]
+async fn set_always_on_top(window: tauri::Window, always_on_top: bool) -> Result<(), String> {
+    window
+        .set_always_on_top(always_on_top)
+        .map_err(|e| format!("Failed to set always on top: {}", e))
+}
+
+#[tauri::command]
+async fn minimize_to_tray(window: tauri::Window) -> Result<(), String> {
+    window
+        .hide()
+        .map_err(|e| format!("Failed to minimize to tray: {}", e))
+}
+
+#[tauri::command]
+async fn export_data(
+    app_handle: tauri::AppHandle,
+    data_type: String,
+    file_path: String,
+) -> Result<(), String> {
+    let app_dir = app_handle
+        .path_resolver()
+        .app_data_dir()
+        .expect("failed to resolve app data dir");
+
+    let source_path = match data_type.as_str() {
+        "activities" => app_dir.join("activities.json"),
+        "profiles" => app_dir.join("profiles.json"),
+        "settings" => app_dir.join("settings.json"),
+        _ => return Err("Invalid data type".to_string()),
+    };
+
+    if !source_path.exists() {
+        return Err(format!("No {} data found", data_type));
+    }
+
+    fs::copy(&source_path, &file_path).map_err(|e| format!("Failed to export {}: {}", data_type, e))
+}
+
+#[tauri::command]
+async fn import_data(
+    app_handle: tauri::AppHandle,
+    data_type: String,
+    file_path: String,
+) -> Result<(), String> {
+    let app_dir = app_handle
+        .path_resolver()
+        .app_data_dir()
+        .expect("failed to resolve app data dir");
+
+    let target_path = match data_type.as_str() {
+        "activities" => app_dir.join("activities.json"),
+        "profiles" => app_dir.join("profiles.json"),
+        "settings" => app_dir.join("settings.json"),
+        _ => return Err("Invalid data type".to_string()),
+    };
+
+    if !PathBuf::from(&file_path).exists() {
+        return Err("Source file not found".to_string());
+    }
+
+    fs::copy(&file_path, &target_path).map_err(|e| format!("Failed to import {}: {}", data_type, e))
 }

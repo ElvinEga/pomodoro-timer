@@ -164,7 +164,9 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-primary-foreground">
-                {summary.productivity > 0 ? `${summary.productivity}/5` : "N/A"}
+                {summary.productivity !== undefined && summary.productivity >= 0
+                  ? `${summary.productivity}/5`
+                  : "N/A"}
               </div>
               <p className="text-xs text-gray-500 mt-1">Average rating</p>
             </CardContent>
@@ -179,7 +181,9 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-primary-foreground">
-                {summary.energy > 0 ? `${summary.energy}/5` : "N/A"}
+                {summary.energy !== undefined && summary.energy >= 0
+                  ? `${summary.energy}/5`
+                  : "N/A"}
               </div>
               <p className="text-xs text-gray-500 mt-1">Average rating</p>
             </CardContent>
@@ -242,9 +246,9 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
                       </div>
 
                       {/* Content */}
-                      <div className="flex-1 space-y-2">
+                      <div className="flex-1 space-y-3">
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
-                          <div className="space-y-1">
+                          <div className="space-y-3">
                             <p className="text-primary-foreground font-medium">
                               {activity.description}
                             </p>
@@ -270,12 +274,12 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
                         {/* Ratings */}
                         {(activity as any).productivity && (
                           <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-sm">
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-2">
                               <TrendingUp className="w-4 h-4 text-muted-foreground" />
                               <span className="text-muted-foreground">
                                 Productivity:
                               </span>
-                              <div className="flex gap-0.5">
+                              <div className="flex gap-1">
                                 {[...Array(5)].map((_, i) => (
                                   <Star
                                     key={i}
@@ -290,12 +294,12 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
                               </div>
                             </div>
                             {(activity as any).energy && (
-                              <div className="flex items-center gap-1">
+                              <div className="flex items-center gap-2">
                                 <Zap className="w-4 h-4 text-muted-foreground" />
                                 <span className="text-muted-foreground">
                                   Energy:
                                 </span>
-                                <div className="flex gap-0.5">
+                                <div className="flex gap-1">
                                   {[...Array(5)].map((_, i) => (
                                     <Zap
                                       key={i}
@@ -315,7 +319,7 @@ export function DailyLog({ selectedDate, onDateChange }: DailyLogProps) {
 
                         {/* Notes */}
                         {(activity as any).notes && (
-                          <p className="text-sm text-muted-foreground italic">
+                          <p className="text-sm text-muted-foreground italic mt-4">
                             "{(activity as any).notes}"
                           </p>
                         )}

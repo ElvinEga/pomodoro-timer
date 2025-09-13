@@ -259,7 +259,7 @@ export function ProfileManager() {
                         "w-8 h-8 rounded-full border-2",
                         formData.color === color
                           ? "border-white"
-                          : "border-transparent",
+                          : "border-transparent"
                       )}
                       style={{ backgroundColor: color }}
                     />
@@ -334,7 +334,7 @@ export function ProfileManager() {
                   disabled={!profile.isCustom}
                   className={cn(
                     "text-muted-foreground hover:text-red-400",
-                    !profile.isCustom && "opacity-30 cursor-not-allowed",
+                    !profile.isCustom && "opacity-30 cursor-not-allowed"
                   )}
                 >
                   <Trash2 className="w-4 h-4" />
@@ -453,7 +453,7 @@ export function ProfileManager() {
                       "w-8 h-8 rounded-full border-2",
                       formData.color === color
                         ? "border-white"
-                        : "border-transparent",
+                        : "border-transparent"
                     )}
                     style={{ backgroundColor: color }}
                   />

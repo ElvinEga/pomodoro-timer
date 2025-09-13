@@ -272,7 +272,7 @@ export function EnhancedSettingsModal({
         <DialogHeader>
           <div className="flex items-center justify-between">
             <div>
-              <DialogTitle className="text-xl">Settings</DialogTitle>
+              <DialogTitle className="text-xl text-left">Settings</DialogTitle>
               <DialogDescription className="text-muted-foreground">
                 Customize your Pomodoro experience
               </DialogDescription>

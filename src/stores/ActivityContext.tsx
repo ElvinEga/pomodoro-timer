@@ -34,7 +34,7 @@ interface ActivityContextType {
 }
 
 const ActivityContext = createContext<ActivityContextType | undefined>(
-  undefined,
+  undefined
 );
 
 function useActivityStore() {
@@ -56,7 +56,7 @@ function useActivityStore() {
       setActivities(activitiesWithDates);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to load activities",
+        err instanceof Error ? err.message : "Failed to load activities"
       );
       console.error("Failed to load activities:", err);
     } finally {
@@ -70,7 +70,7 @@ function useActivityStore() {
       await invoke("write_activities", { data: JSON.stringify(newActivities) });
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to save activities",
+        err instanceof Error ? err.message : "Failed to save activities"
       );
       throw err;
     }
@@ -95,19 +95,19 @@ function useActivityStore() {
         className: " text-primary-foreground",
       });
     },
-    [activities, saveActivities, toast],
+    [activities, saveActivities, toast]
   );
 
   // Update activity
   const updateActivity = useCallback(
     async (id: string, updates: Partial<Activity>) => {
       const newActivities = activities.map((a) =>
-        a.id === id ? { ...a, ...updates } : a,
+        a.id === id ? { ...a, ...updates } : a
       );
       setActivities(newActivities);
       await saveActivities(newActivities);
     },
-    [activities, saveActivities],
+    [activities, saveActivities]
   );
 
   // Delete activity
@@ -123,7 +123,7 @@ function useActivityStore() {
         className: " text-primary-foreground",
       });
     },
-    [activities, saveActivities, toast],
+    [activities, saveActivities, toast]
   );
 
   // Get activities for specific date
@@ -132,10 +132,10 @@ function useActivityStore() {
       const start = startOfDay(date);
       const end = endOfDay(date);
       return activities.filter(
-        (a) => a.timestamp >= start && a.timestamp <= end,
+        (a) => a.timestamp >= start && a.timestamp <= end
       );
     },
-    [activities],
+    [activities]
   );
 
   // Calculate daily summary
@@ -145,21 +145,43 @@ function useActivityStore() {
       if (dayActivities.length === 0) return null;
 
       const focusActivities = dayActivities.filter(
-        (a) => a.sessionType === "focus",
+        (a) => a.sessionType === "focus"
       );
       const breakActivities = dayActivities.filter(
-        (a) => a.sessionType !== "focus",
+        (a) => a.sessionType !== "focus"
       );
 
       const totalFocusTime = focusActivities.reduce(
         (sum, a) => sum + a.duration,
-        0,
+        0
       );
       const totalBreakTime = breakActivities.reduce(
         (sum, a) => sum + a.duration,
-        0,
+        0
       );
       const sessionsCompleted = focusActivities.length;
+
+      // Calculate average productivity and energy from activities with ratings
+      const activitiesWithProductivity = dayActivities.filter(
+        (a) => a.productivity !== undefined && a.productivity > 0
+      );
+      const activitiesWithEnergy = dayActivities.filter(
+        (a) => a.energy !== undefined && a.energy > 0
+      );
+
+      const avgProductivity =
+        activitiesWithProductivity.length > 0
+          ? activitiesWithProductivity.reduce(
+              (sum, a) => sum + (a.productivity || 0),
+              0
+            ) / activitiesWithProductivity.length
+          : 0;
+
+      const avgEnergy =
+        activitiesWithEnergy.length > 0
+          ? activitiesWithEnergy.reduce((sum, a) => sum + (a.energy || 0), 0) /
+            activitiesWithEnergy.length
+          : 0;
 
       return {
         date,
@@ -167,11 +189,11 @@ function useActivityStore() {
         totalBreakTime,
         sessionsCompleted,
         activities: dayActivities,
-        productivity: 0, // Will be calculated from ratings
-        energy: 0, // Will be calculated from ratings
+        productivity: Math.round(avgProductivity * 10) / 10, // Round to 1 decimal
+        energy: Math.round(avgEnergy * 10) / 10, // Round to 1 decimal
       };
     },
-    [getActivitiesForDate],
+    [getActivitiesForDate]
   );
 
   // Calculate daily summaries for date range
@@ -190,7 +212,7 @@ function useActivityStore() {
     const focusActivities = activities.filter((a) => a.sessionType === "focus");
     const totalFocusTime = focusActivities.reduce(
       (sum, a) => sum + a.duration,
-      0,
+      0
     );
     const totalBreakTime = activities
       .filter((a) => a.sessionType !== "focus")
@@ -201,7 +223,7 @@ function useActivityStore() {
       ...new Set(
         activities
           .filter((a) => a.sessionType === "focus")
-          .map((a) => format(startOfDay(a.timestamp), "yyyy-MM-dd")),
+          .map((a) => format(startOfDay(a.timestamp), "yyyy-MM-dd"))
       ),
     ]
       .sort()
@@ -272,7 +294,7 @@ function useActivityStore() {
 
       return JSON.stringify(exportData, null, 2);
     },
-    [activities],
+    [activities]
   );
 
   // Clear old activities
@@ -290,7 +312,7 @@ function useActivityStore() {
         className: " text-primary-foreground",
       });
     },
-    [activities, saveActivities, toast],
+    [activities, saveActivities, toast]
   );
 
   // Load on mount
@@ -328,7 +350,7 @@ export function useActivityContext() {
   const context = useContext(ActivityContext);
   if (context === undefined) {
     throw new Error(
-      "useActivityContext must be used within an ActivityProvider",
+      "useActivityContext must be used within an ActivityProvider"
     );
   }
   return context;

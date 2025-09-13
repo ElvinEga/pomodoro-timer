@@ -1,4 +1,4 @@
-# 🍅 Pomodoro Timer Desktop App
+# Lockyn Timer Desktop App
 
 A modern, feature-rich Pomodoro Timer desktop application built with Tauri 2.0, React, and TypeScript. Track your productivity with customizable profiles, detailed activity logging, and comprehensive analytics.
 
@@ -54,7 +54,7 @@ A modern, feature-rich Pomodoro Timer desktop application built with Tauri 2.0, 
 
 ### Download Pre-built Binaries
 
-1. Go to [Releases](https://github.com/yourusername/pomodoro-timer/releases)
+1. Go to [Releases](https://github.com/ElvinEga/lockyn-timer/releases)
 2. Download the appropriate version for your OS:
    - **Windows**: `.msi` installer
    - **macOS**: `.dmg` disk image
@@ -72,8 +72,8 @@ A modern, feature-rich Pomodoro Timer desktop application built with Tauri 2.0, 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/pomodoro-timer.git
-cd pomodoro-timer
+git clone https://github.com/ElvinEga/lockyn-timer.git
+cd lockyn-timer
 
 # Install dependencies
 npm install
@@ -181,9 +181,9 @@ All data is stored locally on your device:
 
 Location varies by OS:
 
-- **Windows**: `%APPDATA%\com.yourname.pomodoro-timer`
-- **macOS**: `~/Library/Application Support/com.yourname.pomodoro-timer`
-- **Linux**: `~/.local/share/com.yourname.pomodoro-timer`
+- **Windows**: `%APPDATA%\com.yourname.lockyn-timer`
+- **macOS**: `~/Library/Application Support/com.yourname.lockyn-timer`
+- **Linux**: `~/.local/share/com.yourname.lockyn-timer`
 
 ## 🔒 Privacy & Security
 
@@ -222,7 +222,7 @@ Location varies by OS:
 
 ### Getting Help
 
-- Check [Issues](https://github.com/yourusername/pomodoro-timer/issues)
+- Check [Issues](https://github.com/ElvinEga/lockyn-timer/issues)
 - Create a new issue with detailed error information
 - Include your OS and app version
 

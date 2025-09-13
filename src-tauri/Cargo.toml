@@ -1,5 +1,5 @@
 [package]
-name = "pomodoro-timer"
+name = "lockyn-timer"
 version = "0.1.0"
 description = "A modern Pomodoro Timer desktop app"
 authors = ["Elvin Ega"]

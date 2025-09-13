@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Pomodoro Timer",
-  "version": "0.2.0",
-  "identifier": "com.elvinega.pomodoro-timer",
+  "productName": "Lockyn Timer",
+  "version": "0.3.0",
+  "identifier": "com.elvinega.lockyn-timer",
   "build": {
     "beforeDevCommand": "bun run dev",
     "devUrl": "http://localhost:3000",
@@ -21,7 +21,7 @@
         "alwaysOnTop": false,
         "transparent": false,
         "acceptFirstMouse": true,
-        "tabbingIdentifier": "pomodoro-timer",
+        "tabbingIdentifier": "lockyn-timer",
         "additionalBrowserArgs": "--enable-features=WebContentsForceDark"
       }
     ],

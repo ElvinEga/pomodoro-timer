@@ -79,8 +79,8 @@ function TimerContent() {
     state.currentSession === "focus"
       ? state.currentProfile.focusDuration * 60
       : state.currentSession === "short-break"
-        ? state.currentProfile.shortBreakDuration * 60
-        : state.currentProfile.longBreakDuration * 60;
+      ? state.currentProfile.shortBreakDuration * 60
+      : state.currentProfile.longBreakDuration * 60;
 
   const progress =
     ((totalDuration - state.timeRemaining) / totalDuration) * 100;
@@ -139,7 +139,7 @@ function TimerContent() {
               </span>
             </motion.div>
             <h1 className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Pomodoro Timer
+              Lockyn Timer
             </h1>
           </div>
 
@@ -150,7 +150,7 @@ function TimerContent() {
               onClick={() => setShowActivityView(!showActivityView)}
               className={cn(
                 "text-muted-foreground hover:text-primary-foreground hover:bg-white/10",
-                showActivityView && "text-orange-500 bg-orange-500/10",
+                showActivityView && "text-orange-500 bg-orange-500/10"
               )}
             >
               <Activity className="w-5 h-5" />
@@ -250,14 +250,14 @@ function TimerContent() {
                                 state.currentProfile.longBreakAfter
                               ? "bg-orange-500 scale-110"
                               : i ===
-                                  state.sessionsCompleted %
-                                    state.currentProfile.longBreakAfter
-                                ? "bg-orange-500/50 scale-105"
-                                : "bg-gray-600",
+                                state.sessionsCompleted %
+                                  state.currentProfile.longBreakAfter
+                              ? "bg-orange-500/50 scale-105"
+                              : "bg-gray-600"
                           )}
                           whileHover={{ scale: 1.2 }}
                         />
-                      ),
+                      )
                     )}
                   </div>
                 </div>

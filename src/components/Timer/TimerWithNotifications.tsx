@@ -246,10 +246,10 @@ function TimerContent() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <img src="/logo.svg" alt="Pomodoro Timer" className="w-8 h-8" />
+              <img src="/logo.svg" alt="Lockyn Timer" className="w-8 h-8" />
             </motion.div>
             <h1 className="text-xl hidden sm:block font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Pomodoro Timer
+              Lockyn Timer
             </h1>
           </div>
 

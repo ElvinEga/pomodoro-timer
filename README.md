@@ -2,7 +2,7 @@
 
 A modern, feature-rich Pomodoro Timer desktop application built with Tauri 2.0, React, and TypeScript. Track your productivity with customizable profiles, detailed activity logging, and comprehensive analytics.
 
-![Pomodoro Timer Screenshot](screenshot.png)
+![Lockyn Timer Screenshot](screenshot.png)
 
 ## ✨ Features
 

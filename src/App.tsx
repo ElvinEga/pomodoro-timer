@@ -24,7 +24,7 @@ function LoadingScreen() {
           <Coffee className="w-8 h-8 text-primary-foreground" />
         </motion.div>
         <h2 className="text-2xl font-bold text-primary-foreground mb-2">
-          Pomodoro Timer
+          Lockyn Timer
         </h2>
         <p className="text-muted-foreground">
           Getting ready for focused work...
@@ -169,7 +169,7 @@ function App() {
           window.removeEventListener("error", handleError);
           window.removeEventListener(
             "unhandledrejection",
-            handleUnhandledRejection,
+            handleUnhandledRejection
           );
           document.removeEventListener("click", handleFirstInteraction);
           document.removeEventListener("keydown", handleFirstInteraction);

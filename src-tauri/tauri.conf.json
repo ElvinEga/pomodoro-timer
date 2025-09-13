@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Pomodoro Timer",
+        "title": "Lockyn Timer",
         "width": 400,
         "height": 700,
         "resizable": false,
@@ -42,6 +42,6 @@
     "resources": [],
     "category": "Productivity",
     "shortDescription": "A modern Pomodoro Timer for focused work sessions",
-    "longDescription": "A sleek, dark-themed Pomodoro Timer with customizable profiles, activity tracking, and comprehensive productivity analytics."
+    "longDescription": "A sleek, dark-themed Lockyn Timer with customizable profiles, activity tracking, and comprehensive productivity analytics."
   }
 }

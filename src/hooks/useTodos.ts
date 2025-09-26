@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Todo, TodoList, TodoStats } from '@/types';
-import { invoke } from '@tauri-apps/api/tauri';
+import { invoke } from '@tauri-apps/api/core';
 import { v4 as uuidv4 } from 'uuid';
 
 interface UseTodosReturn {
@@ -54,7 +54,7 @@ export function useTodos(): UseTodosReturn {
       setLists(processedLists);
       
       // Set active list
-      const active = processedLists.find(l => l.isActive) || processedLists[0] || null;
+      const active = processedLists.find((l: TodoList) => l.isActive) || processedLists[0] || null;
       setActiveListState(active);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load todos');

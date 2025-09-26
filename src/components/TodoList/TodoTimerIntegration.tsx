@@ -15,9 +15,10 @@ import { cn } from '@/lib/utils';
 
 interface TodoTimerIntegrationProps {
   className?: string;
+  compact?: boolean;
 }
 
-export function TodoTimerIntegration({ className }: TodoTimerIntegrationProps) {
+export function TodoTimerIntegration({ className, compact = false }: TodoTimerIntegrationProps) {
   const { activeList, toggleTodo, incrementPomodoro } = useTodoContext();
   const [activeTodoId, setActiveTodoId] = useState<string | null>(null);
 
@@ -78,12 +79,14 @@ export function TodoTimerIntegration({ className }: TodoTimerIntegrationProps) {
       {/* Next Tasks */}
       <Card className="bg-[#1a1a1a] border-[#2a2a2a]">
         <CardHeader>
-          <CardTitle className="text-white text-sm">Upcoming Tasks</CardTitle>
+          <CardTitle className="text-white text-sm">
+            {compact ? "Current Tasks" : "Upcoming Tasks"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
             <AnimatePresence>
-              {incompleteTodos.slice(0, 3).map((todo, index) => (
+              {incompleteTodos.slice(0, compact ? 2 : 3).map((todo, index) => (
                 <motion.div
                   key={todo.id}
                   initial={{ opacity: 0, x: -20 }}
@@ -133,24 +136,26 @@ export function TodoTimerIntegration({ className }: TodoTimerIntegrationProps) {
       </Card>
 
       {/* Quick Stats */}
-      <Card className="bg-[#1a1a1a] border-[#2a2a2a] p-4">
-        <div className="flex items-center justify-between text-sm">
-          <div className="text-gray-400">
-            Progress: {activeList.todos.filter(t => t.completed).length}/{activeList.todos.length}
+      {!compact && (
+        <Card className="bg-[#1a1a1a] border-[#2a2a2a] p-4">
+          <div className="flex items-center justify-between text-sm">
+            <div className="text-gray-400">
+              Progress: {activeList.todos.filter(t => t.completed).length}/{activeList.todos.length}
+            </div>
+            <div className="text-orange-500">
+              {incompleteTodos.length} remaining
+            </div>
           </div>
-          <div className="text-orange-500">
-            {incompleteTodos.length} remaining
+          <div className="mt-2 h-2 bg-[#2a2a2a] rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-gradient-to-r from-orange-500 to-orange-600"
+              initial={{ width: 0 }}
+              animate={{ width: `${activeList.todos.length > 0 ? (activeList.todos.filter(t => t.completed).length / activeList.todos.length) * 100 : 0}%` }}
+              transition={{ duration: 0.5 }}
+            />
           </div>
-        </div>
-        <div className="mt-2 h-2 bg-[#2a2a2a] rounded-full overflow-hidden">
-          <motion.div
-            className="h-full bg-gradient-to-r from-orange-500 to-orange-600"
-            initial={{ width: 0 }}
-            animate={{ width: `${activeList.todos.length > 0 ? (activeList.todos.filter(t => t.completed).length / activeList.todos.length) * 100 : 0}%` }}
-            transition={{ duration: 0.5 }}
-          />
-        </div>
-      </Card>
+        </Card>
+      )}
     </div>
   );
 }

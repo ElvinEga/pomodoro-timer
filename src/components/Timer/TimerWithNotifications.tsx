@@ -13,7 +13,7 @@ import { DailyLog } from "@/components/ActivityLog/DailyLog";
 import { ActivityCalendar } from "@/components/ActivityLog/ActivityCalendar";
 import { StatisticsCharts } from "@/components/ActivityLog/StatisticsCharts";
 import { EnhancedSettingsModal } from "@/components/Settings/EnhancedSettingsModal";
-import { TodoListView } from "@/components/TodoList/TodoListView";
+import { TodoMainView } from "@/components/TodoList/TodoMainView";
 import { TodoTimerIntegration } from "@/components/TodoList/TodoTimerIntegration";
 import {
   Settings,
@@ -27,6 +27,7 @@ import {
   Clock,
   ChevronLeftCircle,
   ArrowLeft,
+  CheckSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -48,6 +49,7 @@ function TimerContent() {
   const [pendingActivity, setPendingActivity] = useState<any>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showActivityView, setShowActivityView] = useState(false);
+  const [showTodoView, setShowTodoView] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const { toast } = useToast();
@@ -302,12 +304,33 @@ function TimerContent() {
               </Button>
             </motion.div>
 
+            {/* Todo View Toggle */}
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  setShowTodoView(true);
+                  setShowActivityView(false);
+                }}
+                className={cn(
+                  "text-muted-foreground hover:text-primary-foreground",
+                  showTodoView && "text-orange-500 bg-orange-500/10"
+                )}
+              >
+                <CheckSquare className="w-5 h-5" />
+              </Button>
+            </motion.div>
+
             {/* Activity view toggle */}
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setShowActivityView(!showActivityView)}
+                onClick={() => {
+                  setShowActivityView(true);
+                  setShowTodoView(false);
+                }}
                 className={cn(
                   "text-muted-foreground hover:text-primary-foreground",
                   showActivityView && "text-orange-500 bg-orange-500/10"
@@ -345,7 +368,7 @@ function TimerContent() {
         </motion.div>
 
         <AnimatePresence mode="wait">
-          {!showActivityView ? (
+          {!showActivityView && !showTodoView ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -423,22 +446,8 @@ function TimerContent() {
                   )}
                 </div>
               </motion.div>
-
-              {/* Todo Integration */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 }}
-                className="w-full max-w-md space-y-4"
-              >
-                {/* Quick Todo View */}
-                <TodoTimerIntegration />
-                
-                {/* Full Todo List */}
-                <TodoListView />
-              </motion.div>
             </motion.div>
-          ) : (
+          ) : showActivityView ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -644,7 +653,37 @@ function TimerContent() {
               {/* Additional Statistics Charts */}
               <StatisticsCharts />
             </motion.div>
-          )}
+          ) : showTodoView ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="flex-1 space-y-6"
+            >
+              {/* Todo View Header */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-primary-foreground">
+                    Todo Lists
+                  </h2>
+                  <p className="text-muted-foreground text-sm">
+                    Manage your tasks and track progress
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowTodoView(false)}
+                  className="bg-primary border-[#2a2a2a] text-gray-300 hover:bg-[#2a2a2a]"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back
+                </Button>
+              </div>
+
+              {/* Todo List View */}
+              <TodoMainView />
+            </motion.div>
+          ) : null}
         </AnimatePresence>
 
         {/* Activity Input Modal */}

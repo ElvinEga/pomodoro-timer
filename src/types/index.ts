@@ -477,3 +477,46 @@ export const EventNames = {
   NOTIFICATION_CLICKED: "notification-clicked",
   TRAY_MENU_CLICKED: "tray-menu-clicked",
 } as const;
+
+/**
+ * Todo item structure
+ */
+export interface Todo {
+  id: string;
+  text: string;
+  completed: boolean;
+  priority: 'low' | 'medium' | 'high';
+  category?: string;
+  pomodoroCount?: number; // Estimated Pomodoros needed
+  completedPomodoros?: number; // Actual Pomodoros completed
+  createdAt: Date;
+  completedAt?: Date;
+  dueDate?: Date;
+  notes?: string;
+  tags?: string[];
+}
+
+/**
+ * Todo list structure
+ */
+export interface TodoList {
+  id: string;
+  name: string;
+  todos: Todo[];
+  color: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+/**
+ * Todo statistics
+ */
+export interface TodoStats {
+  totalTodos: number;
+  completedTodos: number;
+  completionRate: number;
+  activeLists: number;
+  totalPomodoros: number;
+  completedPomodoros: number;
+}

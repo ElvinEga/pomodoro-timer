@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useTimer } from "@/hooks/useTimer";
 import { useProfileContext, ProfileProvider } from "@/stores/ProfileContext";
 import { useActivityContext, ActivityProvider } from "@/stores/ActivityContext";
+import { TodoProvider } from "@/stores/TodoContext";
 import { CircularProgress } from "./CircularProgress";
 import { TimerDisplay } from "./TimerDisplay";
 import { TimerControls } from "./TimerControls";
@@ -12,6 +13,8 @@ import { DailyLog } from "@/components/ActivityLog/DailyLog";
 import { ActivityCalendar } from "@/components/ActivityLog/ActivityCalendar";
 import { StatisticsCharts } from "@/components/ActivityLog/StatisticsCharts";
 import { EnhancedSettingsModal } from "@/components/Settings/EnhancedSettingsModal";
+import { TodoListView } from "@/components/TodoList/TodoListView";
+import { TodoTimerIntegration } from "@/components/TodoList/TodoTimerIntegration";
 import {
   Settings,
   Minimize2,
@@ -242,7 +245,7 @@ function TimerContent() {
         >
           <div className="flex items-center gap-3">
             <motion.div
-              className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center"
+              className="w-8 h-8 flex items-center justify-center"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -419,6 +422,20 @@ function TimerContent() {
                     )
                   )}
                 </div>
+              </motion.div>
+
+              {/* Todo Integration */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className="w-full max-w-md space-y-4"
+              >
+                {/* Quick Todo View */}
+                <TodoTimerIntegration />
+                
+                {/* Full Todo List */}
+                <TodoListView />
               </motion.div>
             </motion.div>
           ) : (
@@ -651,10 +668,12 @@ function TimerContent() {
 
 export function TimerWithNotifications() {
   return (
-    <ActivityProvider>
-      <ProfileProvider>
-        <TimerContent />
-      </ProfileProvider>
-    </ActivityProvider>
+    <TodoProvider>
+      <ActivityProvider>
+        <ProfileProvider>
+          <TimerContent />
+        </ProfileProvider>
+      </ActivityProvider>
+    </TodoProvider>
   );
 }

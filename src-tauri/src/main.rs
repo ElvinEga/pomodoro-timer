@@ -261,6 +261,37 @@ async fn backup_data(app_handle: tauri::AppHandle, backup_name: String) -> Resul
     Ok(backup_folder.to_string_lossy().to_string())
 }
 
+#[tauri::command]
+async fn read_todos(app_handle: tauri::AppHandle) -> Result<String, String> {
+    let app_dir = app_handle.path()
+        .app_data_dir()
+        .expect("failed to resolve app data dir");
+    
+    let todos_path = app_dir.join("todos.json");
+    
+    if !todos_path.exists() {
+        let default_todos = r#"{"lists": []}"#;
+        fs::write(&todos_path, default_todos)
+            .map_err(|e| format!("failed to write default todos: {}", e))?;
+        return Ok(default_todos.to_string());
+    }
+    
+    fs::read_to_string(&todos_path)
+        .map_err(|e| format!("failed to read todos: {}", e))
+}
+
+#[tauri::command]
+async fn write_todos(app_handle: tauri::AppHandle, data: String) -> Result<(), String> {
+    let app_dir = app_handle.path()
+        .app_data_dir()
+        .expect("failed to resolve app data dir");
+    
+    let todos_path = app_dir.join("todos.json");
+    
+    fs::write(&todos_path, data)
+        .map_err(|e| format!("failed to write todos: {}", e))
+}
+
 fn create_tray_menu<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<Menu<R>> {
     let show = MenuItem::with_id(app, "show", "Show", true, None::<&str>)?;
     let start_focus = MenuItem::with_id(app, "start_focus", "Start Focus", true, None::<&str>)?;
@@ -355,7 +386,9 @@ pub fn run() {
             import_data,
             get_app_data_dir,
             reset_all_data,
-            backup_data
+            backup_data,
+            read_todos,
+            write_todos
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
